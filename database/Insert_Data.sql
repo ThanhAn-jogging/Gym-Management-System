@@ -151,20 +151,23 @@ INSERT INTO HUANLUYENVIEN (MaNV_LienKet, KinhNghiem, ChuyenMon, BangCap, Rating)
 COMMIT;
 
 
-INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, LichHoc, LoaiLop) 
-VALUES ('Yoga Thiền Buổi Sáng', 'PT002', 'Lớp Yoga thư giãn 6h sáng', 15, 'Thứ 2-4-6 (06:00 - 07:30)', 'YOGA');
+--------------------------------------------------------
+-- NẠP DỮ LIỆU BẢNG LỚP HỌC (Đã cấu trúc lại Ngày tập & Khung giờ)
+--------------------------------------------------------
+INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, NgayTap, KhungGio, LoaiLop) 
+VALUES ('Yoga Thiền Buổi Sáng', 'PT002', 'Lớp Yoga thư giãn 6h sáng', 15, 'Thứ 2-4-6', '06:00 - 07:30', 'YOGA');
 
-INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, LichHoc, LoaiLop) 
-VALUES ('Cardio Đốt Mỡ Cực Đại', 'PT004', 'Lớp Cardio HIIT cường độ cao', 20, 'Thứ 3-5-7 (18:00 - 19:30)', 'CARDIO');
+INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, NgayTap, KhungGio, LoaiLop) 
+VALUES ('Cardio Đốt Mỡ Cực Đại', 'PT004', 'Lớp Cardio HIIT cường độ cao', 20, 'Thứ 3-5-7', '18:00 - 19:30', 'CARDIO');
 
-INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, LichHoc, LoaiLop) 
-VALUES ('Boxing Đối Kháng', 'PT005', 'Lớp võ tự vệ cơ bản', 12, 'Thứ 2-4-6 (19:00 - 20:30)', 'BOXING');
+INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, NgayTap, KhungGio, LoaiLop) 
+VALUES ('Boxing Đối Kháng', 'PT005', 'Lớp võ tự vệ cơ bản', 12, 'Thứ 2-4-6', '19:00 - 20:30', 'BOXING');
 
-INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, LichHoc, LoaiLop) 
-VALUES ('Pilates Trị Liệu', 'PT002', 'Cải thiện cột sống và tư thế', 15, 'Thứ 3-5-7 (08:00 - 09:30)', 'YOGA');
+INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, NgayTap, KhungGio, LoaiLop) 
+VALUES ('Pilates Trị Liệu', 'PT002', 'Cải thiện cột sống và tư thế', 15, 'Thứ 3-5-7', '08:00 - 09:30', 'YOGA');
 
-INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, LichHoc, LoaiLop) 
-VALUES ('Cử Tạ Căn Bản', 'PT001', 'Hướng dẫn form chuẩn', 10, 'Thứ 7, Chủ Nhật (09:00 - 11:00)', 'GYM');
+INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, NgayTap, KhungGio, LoaiLop) 
+VALUES ('Cử Tạ Căn Bản', 'PT001', 'Hướng dẫn form chuẩn', 10, 'Thứ 7, Chủ Nhật', '09:00 - 11:00', 'GYM');
 
 COMMIT;
 

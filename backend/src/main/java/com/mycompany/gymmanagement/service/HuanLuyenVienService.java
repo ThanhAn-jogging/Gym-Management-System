@@ -20,7 +20,7 @@ public class HuanLuyenVienService {
     public void themHLVMoi(HuanLuyenVien hlv) {
         huanLuyenVienRepository.themHLVMoi(
             hlv.getMaPT(), hlv.getMaNV(), hlv.getChuyenMon(), 
-            hlv.getBangCap(), hlv.getKinhNghiem(), hlv.getRating(), hlv.getSoHocVien()
+            hlv.getBangCap(), hlv.getKinhNghiem(), hlv.getRating()
         );
     }
 
@@ -28,7 +28,7 @@ public class HuanLuyenVienService {
     public void capNhatHLV(HuanLuyenVien hlv) {
         huanLuyenVienRepository.capNhatHLVPro(
             hlv.getMaPT(), hlv.getMaNV(), hlv.getChuyenMon(), 
-            hlv.getBangCap(), hlv.getKinhNghiem(), hlv.getRating(), hlv.getSoHocVien()
+            hlv.getBangCap(), hlv.getKinhNghiem(), hlv.getRating()
         );
     }
 

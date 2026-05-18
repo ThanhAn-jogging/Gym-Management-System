@@ -1,3 +1,17 @@
+DELETE FROM TAIKHOAN;
+DELETE FROM BAOTRI;
+DELETE FROM CHECKIN;
+DELETE FROM BAOLUU;
+DELETE FROM DANGKY_LOPHOC;
+DELETE FROM LICHTAP_PT;
+DELETE FROM DANGKY_GOITAP;
+DELETE FROM HOADON;
+DELETE FROM LOPHOC;
+DELETE FROM HUANLUYENVIEN;
+DELETE FROM NHANVIEN;
+DELETE FROM HOIVIEN;
+DELETE FROM THIETBI;
+DELETE FROM VOUCHER;
 DELETE FROM GOITAP;
 
 INSERT INTO GOITAP (TenGoi, ThoiGianHieuLuc, DonGia, MoTa, QuyenGoiTap) VALUES ('Gói Trải Nghiệm 1 Tháng', 30, 500000, 'Gói tập cơ bản không kèm dịch vụ PT', 'GYM');
@@ -23,8 +37,6 @@ INSERT INTO GOITAP (TenGoi, ThoiGianHieuLuc, DonGia, MoTa, QuyenGoiTap) VALUES (
 
 COMMIT;
 
-DELETE FROM NHANVIEN;
-
 INSERT INTO NHANVIEN (HoTen, NgaySinh, GioiTinh, SDT, DiaChi, ChucVu, LuongCB, NgayVaoLam) VALUES ('Hoàng Văn Thái', TO_DATE('1990-05-15', 'YYYY-MM-DD'), 'Nam', '0901111222', 'Quận 1, TP.HCM', 'Quản lý', 15000000, TO_DATE('2020-01-10', 'YYYY-MM-DD'));
 INSERT INTO NHANVIEN (HoTen, NgaySinh, GioiTinh, SDT, DiaChi, ChucVu, LuongCB, NgayVaoLam) VALUES ('Lê Thị Thu Thủy', TO_DATE('1995-10-20', 'YYYY-MM-DD'), 'Nữ', '0912222333', 'Dĩ An, Bình Dương', 'Lễ tân', 7000000, TO_DATE('2022-03-15', 'YYYY-MM-DD'));
 INSERT INTO NHANVIEN (HoTen, NgaySinh, GioiTinh, SDT, DiaChi, ChucVu, LuongCB, NgayVaoLam) VALUES ('Nguyễn Tấn Đạt', TO_DATE('1998-02-28', 'YYYY-MM-DD'), 'Nam', '0923333444', 'Thủ Đức, TP.HCM', 'Bảo vệ', 6500000, TO_DATE('2023-05-05', 'YYYY-MM-DD'));
@@ -47,9 +59,6 @@ INSERT INTO NHANVIEN (HoTen, NgaySinh, GioiTinh, SDT, DiaChi, ChucVu, LuongCB, N
 INSERT INTO NHANVIEN (HoTen, NgaySinh, GioiTinh, SDT, DiaChi, ChucVu, LuongCB, NgayVaoLam) VALUES ('Châu Kiến Quốc', TO_DATE('1998-12-20', 'YYYY-MM-DD'), 'Nam', '0991111222', 'Quận 8, TP.HCM', 'Bảo vệ', 6500000, TO_DATE('2023-09-05', 'YYYY-MM-DD'));
 
 COMMIT;
-
-
-DELETE FROM THIETBI;
 
 INSERT INTO THIETBI (TenTB, LoaiMay, NgayMua, TinhTrang, ViTri) VALUES ('Máy Chạy Bộ Kingsport', 'Cardio', TO_DATE('2022-01-10', 'YYYY-MM-DD'), 'Hoạt động', 'Khu Cardio Tầng 1');
 INSERT INTO THIETBI (TenTB, LoaiMay, NgayMua, TinhTrang, ViTri) VALUES ('Máy Đạp Xe Elip', 'Cardio', TO_DATE('2022-01-12', 'YYYY-MM-DD'), 'Hoạt động', 'Khu Cardio Tầng 1');
@@ -94,8 +103,6 @@ INSERT INTO THIETBI (TenTB, LoaiMay, NgayMua, TinhTrang, ViTri) VALUES ('Máy Ma
 
 COMMIT;
 
-DELETE FROM VOUCHER;
-
 INSERT INTO VOUCHER (TenVoucher, LoaiVoucher, PhanTramGiam, NgayHetHan, GiaTriToiThieu) VALUES ('Giảm 10% Hè Sôi Động', 'Khuyến mãi mùa', 10, TO_DATE('2026-08-31', 'YYYY-MM-DD'), 500000);
 INSERT INTO VOUCHER (TenVoucher, LoaiVoucher, PhanTramGiam, NgayHetHan, GiaTriToiThieu) VALUES ('Giảm 20% Học Sinh', 'Ưu đãi đối tượng', 20, TO_DATE('2026-12-31', 'YYYY-MM-DD'), 300000);
 INSERT INTO VOUCHER (TenVoucher, LoaiVoucher, PhanTramGiam, NgayHetHan, GiaTriToiThieu) VALUES ('Sinh Nhật Hội Viên', 'Quà tặng', 15, TO_DATE('2026-12-31', 'YYYY-MM-DD'), 1000000);
@@ -119,8 +126,6 @@ INSERT INTO VOUCHER (TenVoucher, LoaiVoucher, PhanTramGiam, NgayHetHan, GiaTriTo
 
 COMMIT;
 
-DELETE FROM HOIVIEN;
-
 INSERT INTO HOIVIEN (HoTen, GioiTinh, NgaySinh, SDT, DiaChi, Email, TinhTrangSK, NgayDangKy, HangTV, TongChiTieu) VALUES ('Nguyễn Gia Tiến', 'Nam', TO_DATE('2004-05-12', 'YYYY-MM-DD'), '0988111222', 'Tòa BA4, KTX Khu B', 'tien.nguyen@student.uit.edu.vn', 'Hoàn toàn khỏe mạnh', TO_DATE('2026-01-05', 'YYYY-MM-DD'), 'Silver', 0);
 INSERT INTO HOIVIEN (HoTen, GioiTinh, NgaySinh, SDT, DiaChi, Email, TinhTrangSK, NgayDangKy, HangTV, TongChiTieu) VALUES ('Trần Thành An', 'Nam', TO_DATE('2003-08-20', 'YYYY-MM-DD'), '0988222333', 'Tòa E1, KTX Khu B', 'an.tran@student.uit.edu.vn', 'Hay mỏi lưng do code nhiều', TO_DATE('2026-01-10', 'YYYY-MM-DD'), 'Silver', 0);
 INSERT INTO HOIVIEN (HoTen, GioiTinh, NgaySinh, SDT, DiaChi, Email, TinhTrangSK, NgayDangKy, HangTV, TongChiTieu) VALUES ('Lê Phương Thảo', 'Nữ', TO_DATE('2005-11-03', 'YYYY-MM-DD'), '0988333444', 'Tòa D, KTX Khu B', 'thao.le@gmail.com', 'Cần giảm mỡ bụng', TO_DATE('2026-02-15', 'YYYY-MM-DD'), 'Silver', 0);
@@ -137,17 +142,14 @@ INSERT INTO HOIVIEN (HoTen, GioiTinh, NgaySinh, SDT, DiaChi, Email, TinhTrangSK,
 INSERT INTO HOIVIEN (HoTen, GioiTinh, NgaySinh, SDT, DiaChi, Email, TinhTrangSK, NgayDangKy, HangTV, TongChiTieu) VALUES ('Mai Thị Yến', 'Nữ', TO_DATE('2004-06-06', 'YYYY-MM-DD'), '0990555666', 'Tòa C, KTX Khu B', 'yen.mai@gmail.com', 'Bình thường', TO_DATE('2026-04-22', 'YYYY-MM-DD'), 'Silver', 0);
 INSERT INTO HOIVIEN (HoTen, GioiTinh, NgaySinh, SDT, DiaChi, Email, TinhTrangSK, NgayDangKy, HangTV, TongChiTieu) VALUES ('Tạ Thanh Tùng', 'Nam', TO_DATE('2003-01-30', 'YYYY-MM-DD'), '0990666777', 'Khu A KTX ĐHQG', 'tung.ta@gmail.com', 'Bình thường', TO_DATE('2026-04-25', 'YYYY-MM-DD'), 'Silver', 0);
 
-DELETE FROM HUANLUYENVIEN;
-
-INSERT INTO HUANLUYENVIEN (MaNV, KinhNghiem, ChuyenMon, BangCap, Rating, SoHocVien) VALUES ('NV007', 9, 'Thể hình cơ bản', 'Chứng chỉ NASM', 4.8, 12);
-INSERT INTO HUANLUYENVIEN (MaNV, KinhNghiem, ChuyenMon, BangCap, Rating, SoHocVien) VALUES ('NV008', 2, 'Yoga và Pilates', 'Chứng chỉ Yoga Alliance', 4.9, 34);
-INSERT INTO HUANLUYENVIEN (MaNV, KinhNghiem, ChuyenMon, BangCap, Rating, SoHocVien) VALUES ('NV009', 7, 'Tăng cơ giảm mỡ', 'Chứng chỉ ISSA', 4.7, 38);
-INSERT INTO HUANLUYENVIEN (MaNV, KinhNghiem, ChuyenMon, BangCap, Rating, SoHocVien) VALUES ('NV014', 4, 'Phục hồi chấn thương', 'Chứng chỉ ACE', 4.5, 20);
-INSERT INTO HUANLUYENVIEN (MaNV, KinhNghiem, ChuyenMon, BangCap, Rating, SoHocVien) VALUES ('NV016', 3, 'Kickboxing', 'Chứng chỉ HLV Kickboxing', 4.6, 30);
+INSERT INTO HUANLUYENVIEN (MaNV_LienKet, KinhNghiem, ChuyenMon, BangCap, Rating) VALUES ('NV007', 9, 'Thể hình cơ bản', 'Chứng chỉ NASM', 4.8);
+INSERT INTO HUANLUYENVIEN (MaNV_LienKet, KinhNghiem, ChuyenMon, BangCap, Rating) VALUES ('NV008', 2, 'Yoga và Pilates', 'Chứng chỉ Yoga Alliance', 4.9);
+INSERT INTO HUANLUYENVIEN (MaNV_LienKet, KinhNghiem, ChuyenMon, BangCap, Rating) VALUES ('NV009', 7, 'Tăng cơ giảm mỡ', 'Chứng chỉ ISSA', 4.7);
+INSERT INTO HUANLUYENVIEN (MaNV_LienKet, KinhNghiem, ChuyenMon, BangCap, Rating) VALUES ('NV014', 4, 'Phục hồi chấn thương', 'Chứng chỉ ACE', 4.5);
+INSERT INTO HUANLUYENVIEN (MaNV_LienKet, KinhNghiem, ChuyenMon, BangCap, Rating) VALUES ('NV016', 3, 'Kickboxing', 'Chứng chỉ HLV Kickboxing', 4.6);
 
 COMMIT;
 
-DELETE FROM LOPHOC;
 
 INSERT INTO LOPHOC (TenLop, MaPT, MoTa, SoLuongToiDa, LichHoc, LoaiLop) 
 VALUES ('Yoga Thiền Buổi Sáng', 'PT002', 'Lớp Yoga thư giãn 6h sáng', 15, 'Thứ 2-4-6 (06:00 - 07:30)', 'YOGA');
@@ -166,7 +168,6 @@ VALUES ('Cử Tạ Căn Bản', 'PT001', 'Hướng dẫn form chuẩn', 10, 'Th�
 
 COMMIT;
 
-DELETE FROM HOADON;
 
 INSERT INTO HOADON (MaHV, MaNV, NgayLap, TongTien, MaVoucher, PhuongThucTT, TrangThaiHD, MaGoi) VALUES ('HV001', 'NV002', TO_DATE('2026-01-10', 'YYYY-MM-DD'), 2500000, NULL, 'Momo', 'Đã thanh toán', 'GT003');
 INSERT INTO HOADON (MaHV, MaNV, NgayLap, TongTien, MaVoucher, PhuongThucTT, TrangThaiHD, MaGoi) VALUES ('HV002', 'NV004', TO_DATE('2026-01-10', 'YYYY-MM-DD'), 4500000, NULL, 'Chuyển khoản', 'Đã thanh toán', 'GT004');
@@ -183,8 +184,6 @@ INSERT INTO HOADON (MaHV, MaNV, NgayLap, TongTien, MaVoucher, PhuongThucTT, Tran
 
 COMMIT;
 
-DELETE FROM DANGKY_GOITAP;
-
 INSERT INTO DANGKY_GOITAP (MaHV, MaGoi, MaHD, NgayBatDau, NgayKetThuc, TrangThai) VALUES ('HV001', 'GT003', 'HD001', TO_DATE('2026-01-10', 'YYYY-MM-DD'), NULL, 'Đang hoạt động');
 INSERT INTO DANGKY_GOITAP (MaHV, MaGoi, MaHD, NgayBatDau, NgayKetThuc, TrangThai) VALUES ('HV002', 'GT004', 'HD002', TO_DATE('2026-01-10', 'YYYY-MM-DD'), NULL, 'Đang hoạt động');
 INSERT INTO DANGKY_GOITAP (MaHV, MaGoi, MaHD, NgayBatDau, NgayKetThuc, TrangThai) VALUES ('HV003', 'GT009', 'HD003', TO_DATE('2026-02-15', 'YYYY-MM-DD'), NULL, 'Hết hạn');
@@ -198,9 +197,6 @@ INSERT INTO DANGKY_GOITAP (MaHV, MaGoi, MaHD, NgayBatDau, NgayKetThuc, TrangThai
 INSERT INTO DANGKY_GOITAP (MaHV, MaGoi, MaHD, NgayBatDau, NgayKetThuc, TrangThai) VALUES ('HV011', 'GT004', 'HD011', TO_DATE('2026-04-10', 'YYYY-MM-DD'), NULL, 'Đang hoạt động');
 INSERT INTO DANGKY_GOITAP (MaHV, MaGoi, MaHD, NgayBatDau, NgayKetThuc, TrangThai) VALUES ('HV012', 'GT009', 'HD012', TO_DATE('2026-04-15', 'YYYY-MM-DD'), NULL, 'Đang hoạt động');
 
-
-DELETE FROM DANGKY_LOPHOC;
-
 INSERT INTO DANGKY_LOPHOC (MaHV, MaLop, NgayDangKy) VALUES ('HV003', 'LH001', TO_DATE('2026-02-15', 'YYYY-MM-DD'));
 INSERT INTO DANGKY_LOPHOC (MaHV, MaLop, NgayDangKy) VALUES ('HV004', 'LH002', TO_DATE('2026-02-21', 'YYYY-MM-DD'));
 INSERT INTO DANGKY_LOPHOC (MaHV, MaLop, NgayDangKy) VALUES ('HV008', 'LH003', TO_DATE('2026-03-16', 'YYYY-MM-DD'));
@@ -210,7 +206,6 @@ INSERT INTO DANGKY_LOPHOC (MaHV, MaLop, NgayDangKy) VALUES ('HV001', 'LH005', TO
 
 COMMIT;
 
-DELETE FROM CHECKIN;
 
 INSERT INTO CHECKIN (MaHV, MaDK, ThoiGianVao, ThoiGianRa, GhiChu) VALUES ('HV001', 'DK001', TIMESTAMP '2026-04-20 17:00:00', TIMESTAMP '2026-04-20 18:30:00', 'Bình thường');
 INSERT INTO CHECKIN (MaHV, MaDK, ThoiGianVao, ThoiGianRa, GhiChu) VALUES ('HV002', 'DK002', TIMESTAMP '2026-04-20 17:15:00', TIMESTAMP '2026-04-20 19:00:00', 'Bình thường');
@@ -220,18 +215,15 @@ INSERT INTO CHECKIN (MaHV, MaDK, ThoiGianVao, ThoiGianRa, GhiChu) VALUES ('HV001
 
 COMMIT;
 
-DELETE FROM LICHTAP_PT;
 
 INSERT INTO LICHTAP_PT (MaHV, MaPT, NgayTap, KhungGio, TrangThaiBuoiTap) VALUES ('HV001', 'PT001', TO_DATE('2026-05-05', 'YYYY-MM-DD'), '17:00-18:00', 'Đã xác nhận');
 INSERT INTO LICHTAP_PT (MaHV, MaPT, NgayTap, KhungGio, TrangThaiBuoiTap) VALUES ('HV005', 'PT003', TO_DATE('2026-05-06', 'YYYY-MM-DD'), '18:00-19:00', 'Đã xác nhận');
 INSERT INTO LICHTAP_PT (MaHV, MaPT, NgayTap, KhungGio, TrangThaiBuoiTap) VALUES ('HV011', 'PT004', TO_DATE('2026-05-07', 'YYYY-MM-DD'), '06:00-07:00', 'Chờ xác nhận');
 
-DELETE FROM BAOLUU;
 
 INSERT INTO BAOLUU (MaDK, NgayBatDauNghi, NgayKetThucNghi, LyDo) VALUES ('DK001', TO_DATE('2026-05-15', 'YYYY-MM-DD'), TO_DATE('2026-05-25', 'YYYY-MM-DD'), 'Về quê có việc gia đình');
 INSERT INTO BAOLUU (MaDK, NgayBatDauNghi, NgayKetThucNghi, LyDo) VALUES ('DK005', TO_DATE('2026-05-20', 'YYYY-MM-DD'), TO_DATE('2026-06-20', 'YYYY-MM-DD'), 'Đi thực tập quân sự');
 
-DELETE FROM BAOTRI;
 
 INSERT INTO BAOTRI (MaTB, NgayBaoTri, NoiDung, ChiPhi) VALUES ('TB005', TO_DATE('2026-04-10', 'YYYY-MM-DD'), 'Thay dây cáp kéo tạ', 450000);
 INSERT INTO BAOTRI (MaTB, NgayBaoTri, NoiDung, ChiPhi) VALUES ('TB010', TO_DATE('2026-04-15', 'YYYY-MM-DD'), 'Bọc lại da ghế', 200000);
@@ -240,12 +232,12 @@ INSERT INTO BAOTRI (MaTB, NgayBaoTri, NoiDung, ChiPhi) VALUES ('TB001', TO_DATE(
 
 COMMIT;
 
-DELETE FROM TAIKHOAN;
 
-INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaHV, MaPT, TrangThai) VALUES ('admin', '123456', 'Quản lý', 'NV001', NULL, NULL, 'Hoạt động');
-INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaHV, MaPT, TrangThai) VALUES ('letan01', '123456', 'Lễ tân', 'NV002', NULL, NULL, 'Hoạt động');
-INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaHV, MaPT, TrangThai) VALUES ('pt_truong', '123456', 'Huấn luyện viên', 'NV007', NULL, 'PT001', 'Hoạt động');
-INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaHV, MaPT, TrangThai) VALUES ('pt_huong', '123456', 'Huấn luyện viên', 'NV008', NULL, 'PT002', 'Hoạt động');
+
+INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaPT, TrangThai) VALUES ('admin', '123456', 'Quản lý', 'NV001', NULL, 'Hoạt động');
+INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaPT, TrangThai) VALUES ('letan01', '123456', 'Lễ tân', 'NV002', NULL, 'Hoạt động');
+INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaPT, TrangThai) VALUES ('pt_truong', '123456', 'Huấn luyện viên', 'NV007', 'PT001', 'Hoạt động');
+INSERT INTO TAIKHOAN (TenDN, MatKhau, QuyenTruyCap, MaNV, MaPT, TrangThai) VALUES ('pt_huong', '123456', 'Huấn luyện viên', 'NV008', 'PT002', 'Hoạt động');
 
 COMMIT;
 

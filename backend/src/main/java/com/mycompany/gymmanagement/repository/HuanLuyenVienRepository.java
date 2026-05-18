@@ -10,11 +10,11 @@ public interface HuanLuyenVienRepository extends JpaRepository<HuanLuyenVien, St
 
     @Procedure(procedureName = "SP_THEM_HLV")
     void themHLVMoi(String p_MaPT, String p_MaNV, String p_ChuyenMon, String p_BangCap, 
-                    Integer p_KinhNghiem, Double p_Rating, Integer p_SoHocVien);
+                    Integer p_KinhNghiem, Double p_Rating);
 
     @Procedure(procedureName = "SP_CAPNHAT_HLV")
     void capNhatHLVPro(String p_MaPT, String p_MaNV, String p_ChuyenMon, String p_BangCap, 
-                       Integer p_KinhNghiem, Double p_Rating, Integer p_SoHocVien);
+                       Integer p_KinhNghiem, Double p_Rating);
 
     @Procedure(procedureName = "SP_XOA_HLV")
     void xoaHLVPro(String p_MaPT);

@@ -137,24 +137,22 @@ CREATE OR REPLACE PROCEDURE SP_THEM_HLV (
     p_ChuyenMon IN NVARCHAR2,
     p_BangCap IN NVARCHAR2,
     p_KinhNghiem IN NUMBER,
-    p_Rating IN NUMBER,
-    p_SoHocVien IN NUMBER
+    p_Rating IN NUMBER
+    -- Đã xóa p_SoHocVien
 ) AS
     v_ChucVu NVARCHAR2(100);
 BEGIN
-    -- 1. Tìm chức vụ của nhân viên này
     SELECT CHUCVU INTO v_ChucVu 
     FROM NHANVIEN 
     WHERE MANV = p_MaNV;
 
-    -- 2. Kiểm tra nếu không phải là 'Huấn luyện viên' thì báo lỗi ngay
     IF v_ChucVu <> N'Huấn luyện viên' THEN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Nhân viên này không có chức vụ là Huấn luyện viên!');
     END IF;
 
-    -- 3. Nếu đúng chức vụ thì mới tiến hành Insert
-    INSERT INTO HUANLUYENVIEN (MAPT, MANV_LIENKET, CHUYENMON, BANGCAP, KINHNGHIEM, RATING, SOHOCVIEN)
-    VALUES (p_MaPT, p_MaNV, p_ChuyenMon, p_BangCap, p_KinhNghiem, p_Rating, p_SoHocVien);
+    -- Đã xóa SoHocVien khỏi câu lệnh Insert
+    INSERT INTO HUANLUYENVIEN (MAPT, MANV_LIENKET, CHUYENMON, BANGCAP, KINHNGHIEM, RATING)
+    VALUES (p_MaPT, p_MaNV, p_ChuyenMon, p_BangCap, p_KinhNghiem, p_Rating);
     
     COMMIT;
 EXCEPTION
@@ -170,8 +168,8 @@ CREATE OR REPLACE PROCEDURE SP_CAPNHAT_HLV (
     p_ChuyenMon IN NVARCHAR2,
     p_BangCap IN NVARCHAR2,
     p_KinhNghiem IN NUMBER,
-    p_Rating IN NUMBER,
-    p_SoHocVien IN NUMBER
+    p_Rating IN NUMBER
+    -- Đã xóa p_SoHocVien
 ) AS
 BEGIN
     UPDATE HUANLUYENVIEN
@@ -179,8 +177,7 @@ BEGIN
         CHUYENMON = p_ChuyenMon,
         BANGCAP = p_BangCap,
         KINHNGHIEM = p_KinhNghiem,
-        RATING = p_Rating,
-        SOHOCVIEN = p_SoHocVien
+        RATING = p_Rating
     WHERE MAPT = p_MaPT;
     COMMIT;
 END;

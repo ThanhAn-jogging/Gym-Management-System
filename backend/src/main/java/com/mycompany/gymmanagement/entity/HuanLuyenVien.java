@@ -30,9 +30,7 @@ public class HuanLuyenVien {
     @Column(name = "KINHNGHIEM")
     private Integer kinhNghiem;
 
-    @Column(name = "SOHOCVIEN")
-    private Integer soHocVien;
-
     @Column(name = "RATING")
     private Double rating;
+    
 }

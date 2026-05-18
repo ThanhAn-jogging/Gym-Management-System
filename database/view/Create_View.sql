@@ -1,0 +1,100 @@
+--------------------------------------------------------
+-- TỔNG HỢP CÁC VIEW (KHUNG NHÌN) PHỤC VỤ DASHBOARD & BÁO CÁO
+--------------------------------------------------------
+
+-- 1. View Thống kê các chỉ số tổng quan (Thẻ số liệu)
+CREATE OR REPLACE VIEW VW_DASHBOARD_STATS AS
+WITH RawStats AS (
+    SELECT 
+        (SELECT COUNT(*) FROM HOIVIEN) as total,
+        (SELECT COUNT(*) FROM CHECKIN WHERE TRUNC(THOIGIANVAO) = TRUNC(SYSDATE)) as today_checkin,
+        (SELECT NVL(SUM(TONGTIEN), 0) FROM HOADON WHERE TO_CHAR(NGAYLAP, 'MM/YYYY') = TO_CHAR(SYSDATE, 'MM/YYYY')) as monthly_rev,
+        (SELECT COUNT(*) FROM HOIVIEN WHERE TO_CHAR(NGAYDANGKY, 'MM/YYYY') = TO_CHAR(SYSDATE, 'MM/YYYY')) as new_mem
+    FROM DUAL
+)
+SELECT 
+    total AS TONG_HOI_VIEN, 
+    today_checkin AS CHECKIN_HOM_NAY, 
+    monthly_rev AS DOANH_THU_THANG,
+    TO_NCHAR(CASE WHEN total = 0 THEN '0' ELSE TO_CHAR(ROUND((new_mem/total)*100, 1)) END || N'%') AS TANG_TRUONG 
+FROM RawStats;
+/
+
+-- 2. View Cảnh báo danh sách hội viên sắp hết hạn gói tập (Trong 10 ngày tới)
+CREATE OR REPLACE VIEW VW_EXPIRING_MEMBERS AS
+SELECT 
+    hv.HOTEN, 
+    hv.SDT, 
+    gt.TENGOI, 
+    (TRUNC(dk.NGAYKETTHUC) - TRUNC(SYSDATE)) AS SO_NGAY_CON_LAI
+FROM DANGKY_GOITAP dk
+JOIN HOIVIEN hv ON dk.MAHV = hv.MAHV
+JOIN GOITAP gt ON dk.MAGOI = gt.MAGOI
+WHERE TRUNC(dk.NGAYKETTHUC) >= TRUNC(SYSDATE) 
+  AND TRUNC(dk.NGAYKETTHUC) <= TRUNC(SYSDATE) + 10
+  AND (dk.TRANGTHAI IS NULL OR dk.TRANGTHAI != N'Hết hạn')
+ORDER BY SO_NGAY_CON_LAI ASC;
+/
+
+-- 3. View Báo cáo tỷ lệ phân phối Gói tập (Biểu đồ cơ cấu / Progress Bar)
+CREATE OR REPLACE VIEW VW_PACKAGE_DISTRIBUTION AS
+SELECT 
+    gt.TENGOI AS NAME,
+    COUNT(dk.MADK) AS VALUE
+FROM GOITAP gt
+LEFT JOIN DANGKY_GOITAP dk ON gt.MAGOI = dk.MAGOI
+GROUP BY gt.TENGOI
+ORDER BY VALUE DESC;
+/
+
+-- 4. View Báo cáo doanh thu có gom cụm (Grouping & Totals Report)
+CREATE OR REPLACE VIEW VW_REPORT_REVENUE_GROUPING AS
+SELECT 
+    NVL(gt.TENGOI, 'TỔNG CỘNG (GRAND TOTAL)') AS TEN_GOI,
+    COUNT(dk.MADK) AS SO_LUOT_DANG_KY,
+    SUM(hd.TONGTIEN) AS TONG_DOANH_THU
+FROM HOADON hd
+JOIN DANGKY_GOITAP dk ON hd.MAHD = dk.MAHD
+JOIN GOITAP gt ON dk.MAGOI = gt.MAGOI
+GROUP BY ROLLUP(gt.TENGOI);
+/
+
+-- 5. View Biểu đồ đường phân tích xu hướng tăng trưởng Hội viên (6 tháng gần nhất)
+CREATE OR REPLACE VIEW VW_CHART_MEMBER_GROWTH AS
+WITH MonthSeries AS (
+    SELECT 
+        ADD_MONTHS(TRUNC(SYSDATE, 'MM'), - (6 - LEVEL)) AS M_START,
+        LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE, 'MM'), - (6 - LEVEL))) AS M_END
+    FROM DUAL CONNECT BY LEVEL <= 6
+)
+SELECT 
+    TO_NCHAR(N'T' || EXTRACT(MONTH FROM M_START)) AS NAME,
+    (SELECT COUNT(*) FROM HOIVIEN WHERE NGAYDANGKY <= M_END) AS VALUE
+FROM MonthSeries ORDER BY M_START ASC;
+/
+
+-- 6. View Biểu đồ đường phân tích xu hướng tăng trưởng Doanh thu (6 tháng gần nhất)
+CREATE OR REPLACE VIEW VW_CHART_REVENUE_GROWTH AS
+WITH MonthSeries AS (
+    SELECT 
+        ADD_MONTHS(TRUNC(SYSDATE, 'MM'), - (6 - LEVEL)) AS M_START,
+        LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE, 'MM'), - (6 - LEVEL))) AS M_END
+    FROM DUAL CONNECT BY LEVEL <= 6
+)
+SELECT 
+    TO_NCHAR(N'T' || EXTRACT(MONTH FROM M_START)) AS NAME,
+    NVL((SELECT SUM(TONGTIEN) FROM HOADON WHERE NGAYLAP >= M_START AND NGAYLAP <= M_END), 0) AS VALUE
+FROM MonthSeries ORDER BY M_START ASC;
+/
+
+-- 7. View Cập nhật nhật ký hoạt động gần đây nhất (Recent Activities Timeline)
+CREATE OR REPLACE VIEW VW_RECENT_ACTIVITIES AS
+SELECT * FROM (
+    SELECT TO_NCHAR('Hội viên mới') as TIEU_DE, TO_NCHAR(HOTEN || N' đã đăng ký') as MO_TA, NGAYDANGKY as THOI_GIAN, TO_NCHAR('text-blue-500') as MAU FROM HOIVIEN
+    UNION ALL
+    SELECT TO_NCHAR('Thanh toán'), TO_NCHAR(N'Hóa đơn ' || MAHD || N': ' || TONGTIEN), NGAYLAP, TO_NCHAR('text-yellow-500') FROM HOADON
+    UNION ALL
+    SELECT TO_NCHAR('Check-in'), TO_NCHAR(N'Mã ' || MAHV || N' vừa check-in'), THOIGIANVAO, TO_NCHAR('text-green-500') FROM CHECKIN
+    ORDER BY THOI_GIAN DESC
+) FETCH FIRST 4 ROWS ONLY;
+/

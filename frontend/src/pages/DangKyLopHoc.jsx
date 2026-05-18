@@ -7,7 +7,6 @@ const DangKyLopHoc = () => {
   const [hoivienList, setHoivienList] = useState([]);
   const [lophocList, setLophocList] = useState([]);
   
-  // Thêm 2 danh sách này để phục vụ việc lọc "quyền"
   const [dangKyGoiTapList, setDangKyGoiTapList] = useState([]);
   const [goitapList, setGoitapList] = useState([]);
   
@@ -21,8 +20,8 @@ const DangKyLopHoc = () => {
         axios.get('http://localhost:8080/api/dangky-lophoc'),
         axios.get('http://localhost:8080/api/hoivien'),
         axios.get('http://localhost:8080/api/lophoc'),
-        axios.get('http://localhost:8080/api/dangky-goitap'), // Lấy danh sách đăng ký gói
-        axios.get('http://localhost:8080/api/goitap')        // Lấy danh sách định nghĩa gói
+        axios.get('http://localhost:8080/api/dangky-goitap'), 
+        axios.get('http://localhost:8080/api/goitap')     
       ]);
 
       setDangKyList(dkRes.data);
@@ -37,23 +36,19 @@ const DangKyLopHoc = () => {
 
   useEffect(() => { fetchData(); }, []);
 
-  // --- LOGIC LỌC LỚP HỌC THÔNG MINH ---
   const getAllowedClasses = () => {
     if (!formData.maHV) return [];
 
-    // 1. Tìm gói tập ĐANG CÒN HẠN của hội viên này
     const activeDK = dangKyGoiTapList.find(dk => 
       dk.maHV === formData.maHV && 
       new Date(dk.ngayKetThuc) >= new Date()
     );
 
-    if (!activeDK) return []; // Không có gói tập còn hạn thì không hiện lớp nào
+    if (!activeDK) return []; 
 
-    // 2. Lấy "Quyền gói tập" từ mã gói đó
     const packageInfo = goitapList.find(gt => gt.maGoi === activeDK.maGoi);
     const quyen = packageInfo?.quyenGoiTap;
 
-    // 3. Lọc danh sách lớp học khớp với quyền (hoặc quyền là ALL)
     return lophocList.filter(lop => 
       quyen === 'ALL' || lop.loaiLop === quyen
     );

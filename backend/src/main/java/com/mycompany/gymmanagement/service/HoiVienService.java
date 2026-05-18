@@ -40,7 +40,6 @@ public class HoiVienService {
 
     @Transactional
     public void xoaHoiVien(String maHV) {
-        // Gọi Procedure để xóa dữ liệu dứt điểm
         hoiVienRepository.xoaHoiVienPro(maHV);
     }
 }

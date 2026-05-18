@@ -9,7 +9,6 @@ const LopHoc = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   
-  // Đã cấu trúc lại trường ngayTap và khungGio
   const [formData, setFormData] = useState({
     maLop: '', tenLop: '', maPT: '', moTa: '', soLuongToiDa: 15, ngayTap: '', khungGio: '', loaiLop: 'YOGA'
   });

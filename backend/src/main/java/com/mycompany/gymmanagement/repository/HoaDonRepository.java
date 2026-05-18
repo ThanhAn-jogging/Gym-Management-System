@@ -12,8 +12,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, String> {
     void taoHoaDonMoi(
         String p_MaHD, 
         String p_MaHV, 
-        String p_MaGoi,      // Vị trí thứ 3
-        String p_MaVoucher,  // Vị trí thứ 4
+        String p_MaGoi,   
+        String p_MaVoucher,  
         Double p_TongTienGoc
     );
     

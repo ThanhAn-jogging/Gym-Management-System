@@ -6,10 +6,8 @@ CREATE OR REPLACE FUNCTION F_TINH_TIEN_SAU_GIAM_GIA (
     v_PhanTramGiam NUMBER := 0;
     v_ThanhTien NUMBER := 0;
 BEGIN
-    -- [2] Truy vấn đơn giá gốc của gói tập
     SELECT NVL(DonGia, 0) INTO v_DonGia FROM GOITAP WHERE MaGoi = p_MaGoi;
 
-    -- [3] Xác định tỷ lệ giảm giá chiết khấu của chiến dịch Voucher
     IF p_MaVoucher IS NOT NULL THEN
         BEGIN
             SELECT NVL(PhanTramGiam, 0) INTO v_PhanTramGiam 
@@ -20,10 +18,8 @@ BEGIN
         END;
     END IF;
 
-    -- [4] Thực thi công thức tính toán tiền tệ sau ưu đãi
     v_ThanhTien := v_DonGia * (1 - (v_PhanTramGiam / 100));
     
-    -- [5] Trả về kết quả số tiền thực thu
     RETURN v_ThanhTien;
 END;
 /

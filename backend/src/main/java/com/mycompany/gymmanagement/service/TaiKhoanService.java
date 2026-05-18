@@ -37,23 +37,18 @@ public class TaiKhoanService {
         taiKhoanRepository.xoaTaiKhoanPro(tenDN);
     }
 
-    // Hàm xử lý logic đăng nhập
     public TaiKhoan dangNhap(String tenDN, String matKhau) {
-        // 1. Kiểm tra tài khoản có tồn tại không
         TaiKhoan tk = taiKhoanRepository.findById(tenDN)
                 .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại!"));
 
-        // 2. Kiểm tra mật khẩu
         if (!tk.getMatKhau().equals(matKhau)) {
             throw new RuntimeException("Sai mật khẩu!");
         }
 
-        // 3. Chặn đăng nhập nếu tài khoản không ở trạng thái Hoạt động (Đã khóa)
         if (tk.getTrangThai() == null || !tk.getTrangThai().equals("Hoạt động")) {
             throw new RuntimeException("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Quản trị viên!");
         }
 
-        // Vượt qua hết thì cho phép đăng nhập thành công
         return tk;
     }
 }

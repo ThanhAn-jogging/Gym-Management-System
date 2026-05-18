@@ -7,14 +7,12 @@ const GoiTap = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOption, setSortOption] = useState('price-asc');
   
-  // State quản lý Modal Thêm/Sửa (ĐÃ BỔ SUNG QUYỀN GÓI TẬP)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [formData, setFormData] = useState({
     maGoi: '', tenGoi: '', donGia: '', thoiGianHieuLuc: '', moTa: '', quyenGoiTap: 'GYM'
   });
 
-  // Gọi API lấy dữ liệu gói tập
   const fetchPackages = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/goitap');
@@ -26,13 +24,11 @@ const GoiTap = () => {
 
   useEffect(() => { fetchPackages(); }, []);
 
-  // LỌC: Tìm kiếm theo Tên Gói hoặc Mã Gói
   let processedPackages = packages.filter(pkg => 
     (pkg.tenGoi && pkg.tenGoi.toLowerCase().includes(searchTerm.toLowerCase())) || 
     (pkg.maGoi && pkg.maGoi.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  // SẮP XẾP: Theo Giá hoặc Thời gian
   processedPackages.sort((a, b) => {
     if (sortOption === 'price-asc') return (a.donGia || 0) - (b.donGia || 0);
     if (sortOption === 'price-desc') return (b.donGia || 0) - (a.donGia || 0);
@@ -41,26 +37,21 @@ const GoiTap = () => {
     return 0;
   });
 
-  // Format tiền tệ
   const formatCurrency = (amount) => {
     if (!amount) return '0';
     return amount.toLocaleString('vi-VN');
   };
 
-  // Thống kê
   const totalPackages = packages.length;
   const totalRegistrations = packages.reduce((sum, pkg) => sum + (pkg.luotDangKy || 0), 0);
   const popularPackages = packages.filter(pkg => (pkg.luotDangKy || 0) > 0).length;
 
-  // Xử lý mở Modal Sửa
   const handleOpenEdit = (pkg) => {
     setModalMode('edit');
-    // Đảm bảo load đúng quyền gói tập cũ lên form, nếu không có mặc định là GYM
     setFormData({ ...pkg, quyenGoiTap: pkg.quyenGoiTap || 'GYM' }); 
     setIsModalOpen(true);
   };
 
-  // Xử lý Thêm / Sửa
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -72,19 +63,16 @@ const GoiTap = () => {
       setIsModalOpen(false);
       fetchPackages();
     } catch (error) { 
-      // SỬA CHỖ NÀY: Lấy lỗi trực tiếp từ Backend
       alert(error.response?.data || 'Có lỗi xảy ra khi lưu thông tin!'); 
     }
   };
 
-  // Xử lý Xóa
   const handleDelete = async (maGoi) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa Gói tập này không?')) {
       try {
         await axios.delete(`http://localhost:8080/api/goitap/${maGoi}`);
         fetchPackages(); 
       } catch (error) {
-        // SỬA CHỖ NÀY: Oracle báo khóa ngoại hay báo lỗi gì thì show lỗi đó ra
         alert(error.response?.data || 'Không thể xóa Gói tập này!');
       }
     }

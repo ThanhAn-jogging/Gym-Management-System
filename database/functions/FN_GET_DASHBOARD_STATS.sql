@@ -14,10 +14,8 @@ IS
     v_checkin NUMBER;
     v_doanh_thu NUMBER;
 BEGIN
-    -- Số check-in luôn là của ngày hôm nay
     SELECT COUNT(*) INTO v_checkin FROM CHECKIN WHERE TRUNC(THOIGIANVAO) = TRUNC(SYSDATE);
     
-    -- Xử lý rẽ nhánh logic thống kê tùy theo tham số truyền vào
     IF p_TimeFilter = 'MONTH' THEN
         SELECT COUNT(*) INTO v_tong_hv FROM HOIVIEN WHERE TO_CHAR(NGAYDANGKY, 'MM/YYYY') = TO_CHAR(SYSDATE, 'MM/YYYY');
         SELECT NVL(SUM(TONGTIEN), 0) INTO v_doanh_thu FROM HOADON WHERE TO_CHAR(NGAYLAP, 'MM/YYYY') = TO_CHAR(SYSDATE, 'MM/YYYY');

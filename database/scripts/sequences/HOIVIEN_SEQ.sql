@@ -1,4 +1,3 @@
--- Tạo Sequence đếm số cho Hội viên
 CREATE SEQUENCE SEQ_HOIVIEN
 START WITH 1
 INCREMENT BY 1
@@ -6,7 +5,6 @@ NOCACHE
 NOCYCLE;
 /
 
--- Tạo Trigger ghép tiền tố 'HV' với số từ Sequence
 CREATE OR REPLACE TRIGGER TRG_HOIVIEN_ID
 BEFORE INSERT ON HOIVIEN
 FOR EACH ROW

@@ -7,7 +7,6 @@ const CheckIn = () => {
   const [inputValue, setInputValue] = useState('');
   const [hoivienList, setHoivienList] = useState([]);
 
-  // Hàm gọi API lấy dữ liệu (được tách ra để gọi lại sau khi check-in/out)
   const fetchCheckins = async () => {
     try {
       const [checkinRes, hoivienRes] = await Promise.all([
@@ -20,7 +19,6 @@ const CheckIn = () => {
 
       setHoivienList(members);
 
-      // Ghép tên hội viên vào dữ liệu check-in
       const enrichedCheckins = checkins.map(ci => {
         const memberInfo = members.find(m => 
           String(m.maHV || '').trim() === String(ci.maHV || '').trim()
@@ -32,7 +30,6 @@ const CheckIn = () => {
         };
       });
 
-      // Sắp xếp lịch sử mới nhất lên đầu (Dựa vào thời gian vào)
       enrichedCheckins.sort((a, b) => new Date(b.thoiGianVao) - new Date(a.thoiGianVao));
       setCheckinData(enrichedCheckins);
 
@@ -41,17 +38,14 @@ const CheckIn = () => {
     }
   };
 
-  // Gọi lần đầu khi load trang
   useEffect(() => {
     fetchCheckins();
   }, []);
 
-  // Xử lý Check-in (Vào)
   const handleCheckIn = async () => {
     if (!inputValue.trim()) return alert("Vui lòng nhập mã hội viên!");
     const maHoiVien = inputValue.trim().toUpperCase();
 
-    // Kiểm tra xem hội viên này có đang ở trong phòng tập không (chưa có thoiGianRa)
     const isTraining = checkinData.find(ci => ci.maHV === maHoiVien && !ci.thoiGianRa);
     if (isTraining) {
       return alert("Hội viên này hiện đang ở trong phòng tập! Vui lòng Check-out trước.");
@@ -59,23 +53,21 @@ const CheckIn = () => {
 
     try {
       await axios.post('http://localhost:8080/api/checkin/vao', {
-        maCheckIn: '', // Để Stored Procedure hoặc Sequence tự sinh
+        maCheckIn: '', 
         maHV: maHoiVien,
-        maDK: '' // Stored Procedure nên tự động tìm MaDK còn hạn (NgayKetThuc) dựa trên MaHV
+        maDK: '' 
       });
-      setInputValue(''); // Xóa ô nhập
-      fetchCheckins();   // Load lại danh sách và thống kê
+      setInputValue('');
+      fetchCheckins();  
     } catch (error) {
       alert(error.response?.data || "Lỗi Check-in: Hội viên không tồn tại hoặc gói tập đã hết hạn!");
     }
   };
 
-  // Xử lý Check-out (Bằng ô nhập liệu)
   const handleCheckOut = async () => {
     if (!inputValue.trim()) return alert("Vui lòng nhập mã hội viên!");
     const maHoiVien = inputValue.trim().toUpperCase();
 
-    // Tìm lượt vào hiện tại của hội viên này
     const activeSession = checkinData.find(ci => ci.maHV === maHoiVien && !ci.thoiGianRa);
     if (!activeSession) {
       return alert("Hội viên này chưa Check-in hoặc đã Check-out rồi!");
@@ -84,7 +76,6 @@ const CheckIn = () => {
     thucHienCheckOut(activeSession.maCheckIn);
   };
 
-  // Xử lý Check-out (Bằng nút trực tiếp trên bảng)
   const thucHienCheckOut = async (maCheckIn) => {
     try {
       await axios.post(`http://localhost:8080/api/checkin/ra/${maCheckIn}`);
@@ -95,19 +86,16 @@ const CheckIn = () => {
     }
   };
 
-  // Format thời gian chỉ lấy Giờ:Phút (VD: 06:30)
   const formatTime = (dateString) => {
     if (!dateString) return '—';
     const date = new Date(dateString);
     return date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Tính toán số liệu thống kê (Lấy dữ liệu thật của ngày hôm nay)
   const todayStr = new Date().toISOString().split('T')[0];
   const todayCheckins = checkinData.filter(ci => ci.thoiGianVao && ci.thoiGianVao.startsWith(todayStr));
   
   const totalToday = todayCheckins.length;
-  // Những người đang tập là những người có thoiGianVao nhưng chưa có thoiGianRa
   const currentlyActive = checkinData.filter(ci => !ci.thoiGianRa).length;
 
   return (

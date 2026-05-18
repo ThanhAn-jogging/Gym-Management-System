@@ -15,7 +15,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20002, N'Lỗi: Giá trị đơn tối thiểu không được là số âm!');
     END IF;
     
-    -- Khi cập nhật cũng không được gia hạn lùi về quá khứ
     IF p_NgayHetHan < TRUNC(SYSDATE) THEN
         RAISE_APPLICATION_ERROR(-20003, N'Lỗi: Ngày hết hạn không thể nằm trong quá khứ!');
     END IF;

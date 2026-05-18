@@ -15,10 +15,8 @@ public class DashboardSummaryDTO {
     private List<ExpiringMemberDTO> expiringMembers;
     private List<PackageDistDTO> packageDistribution;
     
-    // 1. Khai báo biến
     private List<RevenueReportDTO> revenueReport;
 
-    // 2. TỰ VIẾT TAY HÀM SETTER/GETTER NÀY ĐỂ HẾT BỊ BÁO LỖI UNDEFINED
     public void setRevenueReport(List<RevenueReportDTO> revenueReport) {
         this.revenueReport = revenueReport;
     }
@@ -33,7 +31,6 @@ public class DashboardSummaryDTO {
         return this.revenueChartData;
     }
 
-    // --- Các phần Class con bên dưới giữ nguyên ---
     @Data @NoArgsConstructor @AllArgsConstructor
     public static class RevenueReportDTO {
         private String tenGoi;
@@ -63,7 +60,6 @@ public class DashboardSummaryDTO {
         private Integer soNgayConLai;
     }
 
-    // THÊM CLASS NÀY
     @Data @NoArgsConstructor @AllArgsConstructor
     public static class PackageDistDTO {
         private String name;

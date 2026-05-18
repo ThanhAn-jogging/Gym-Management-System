@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Repository
 public interface LichTapPTRepository extends JpaRepository<LichTapPT, String> {
 
-    // Gọi đúng tên Procedure lúc nãy và BỎ p_MaLich đi (vì Trigger lo rồi)
     @Procedure(procedureName = "SP_DAT_LICH_PT")
     void dangKyLichTap(
         @Param("p_MaHV") String p_MaHV, 

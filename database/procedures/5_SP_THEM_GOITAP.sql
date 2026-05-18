@@ -7,7 +7,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_GOITAP (
 ) AS
     v_NewMaGoi VARCHAR2(10);
 BEGIN
-    -- Ràng buộc logic dữ liệu
     IF p_DonGia < 0 THEN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Đơn giá không được nhỏ hơn 0!');
     END IF;
@@ -15,7 +14,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20002, N'Lỗi: Thời gian hiệu lực phải lớn hơn 0!');
     END IF;
 
-    -- Tự sinh mã
     v_NewMaGoi := 'GT' || LPAD(SEQ_GOITAP.NEXTVAL, 3, '0');
 
     INSERT INTO GOITAP (MAGOI, TENGOI, DONGIA, THOIGIANHIEULUC, MOTA, QUYENGOITAP)

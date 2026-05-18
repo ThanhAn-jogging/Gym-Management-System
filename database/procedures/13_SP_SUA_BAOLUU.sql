@@ -20,10 +20,8 @@ BEGIN
     v_SoNgay_Cu := v_NgayKetThuc_Cu - v_NgayBatDau_Cu;
     v_SoNgay_Moi := p_NgayKetThuc_Moi - p_NgayBatDau_Moi;
 
-    -- Lấy ngày cũ TRỪ đi số ngày bảo lưu cũ (trả về nguyên trạng), rồi CỘNG số ngày bảo lưu mới
     UPDATE DANGKY_GOITAP SET NgayKetThuc = NgayKetThuc - v_SoNgay_Cu + v_SoNgay_Moi WHERE MaDK = p_MaDK;
     
-    -- Cập nhật thông tin phiếu
     UPDATE BAOLUU SET MaDK = p_MaDK, NgayBatDauNghi = p_NgayBatDau_Moi, NgayKetThucNghi = p_NgayKetThuc_Moi, LyDo = p_LyDo
     WHERE MaBaoLuu = p_MaBaoLuu;
     COMMIT;

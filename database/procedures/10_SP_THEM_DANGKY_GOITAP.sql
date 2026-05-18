@@ -14,27 +14,21 @@ CREATE OR REPLACE PROCEDURE SP_THEM_DANGKY_GOITAP (
     v_TongTien NUMBER;
     v_NgayKetThuc DATE;
 BEGIN
-    -- 1. Lấy thông tin Gói tập (Giá và Ngày)
     SELECT DonGia, ThoiGianHieuLuc INTO v_DonGia, v_ThoiGian FROM GOITAP WHERE MaGoi = p_MaGoi;
     
-    -- 2. Tính toán Ngày Kết Thúc
     v_NgayKetThuc := p_NgayBatDau + v_ThoiGian;
 
-    -- 3. Tính Tiền
     IF p_MaVoucher IS NOT NULL THEN
         SELECT NVL(PhanTramGiam, 0) INTO v_PhanTramGiam FROM VOUCHER WHERE MaVoucher = p_MaVoucher;
     END IF;
     v_TongTien := v_DonGia * (1 - v_PhanTramGiam / 100);
 
-    -- 4. Sinh mã
     v_MaDK := 'DK' || LPAD(SEQ_DANGKY_GOITAP.NEXTVAL, 3, '0');
     v_MaHD := 'HD' || LPAD(SEQ_HOADON.NEXTVAL, 3, '0');
 
-    -- 5. Insert Hóa Đơn (Trigger Hội viên sẽ tự chạy)
     INSERT INTO HOADON (MaHD, MaHV, MaNV, NgayLap, TongTien, MaVoucher, PhuongThucTT, TrangThaiHD, MAGOI)
     VALUES (v_MaHD, p_MaHV, p_MaNV, p_NgayBatDau, v_TongTien, p_MaVoucher, p_PhuongThucTT, 'Đã thanh toán', p_MaGoi);
 
-    -- 6. Insert Đăng Ký
     INSERT INTO DANGKY_GOITAP (MaDK, MaHV, MaGoi, NgayBatDau, NgayKetThuc, MaHD, TrangThai)
     VALUES (v_MaDK, p_MaHV, p_MaGoi, p_NgayBatDau, v_NgayKetThuc, v_MaHD, 'Đang hoạt động');
 

@@ -9,7 +9,7 @@ const LichTapPT = () => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState('add'); // 'add' hoặc 'edit'
+  const [modalMode, setModalMode] = useState('add');
   const [formData, setFormData] = useState({
     maLich: '', maHV: '', maPT: '', ngayTap: new Date().toISOString().split('T')[0], khungGio: '08:00 - 09:30', trangThaiBuoiTap: 'Sắp diễn ra'
   });
@@ -32,7 +32,6 @@ const LichTapPT = () => {
         };
       });
 
-      // Sắp xếp lịch theo ngày giảm dần
       enrichedData.sort((a, b) => new Date(b.ngayTap) - new Date(a.ngayTap));
       
       setSchedules(enrichedData);

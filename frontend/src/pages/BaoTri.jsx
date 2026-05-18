@@ -48,18 +48,16 @@ const BaoTri = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Đóng gói dữ liệu gửi xuống Backend
       const payloadBT = {
         maPhieuBT: formData.maPhieuBT,
         maTB: formData.maTB,
         ngayBaoTri: formData.ngayBaoTri,
         noiDung: formData.noiDung,
         chiPhi: formData.chiPhi,
-        tinhTrangMay: formData.tinhTrangMay // Gửi kèm để nếu đang Sửa thì báo máy đã hoạt động lại
+        tinhTrangMay: formData.tinhTrangMay
       };
 
       if (modalMode === 'add') {
-        // GỌI DUY NHẤT 1 API NÀY, BẢNG THIẾT BỊ SẼ DO ORACLE TỰ ĐỘNG CHUYỂN TRẠNG THÁI
         await axios.post('http://localhost:8080/api/baotri', payloadBT);
       } else {
         await axios.put(`http://localhost:8080/api/baotri/${formData.maPhieuBT}`, payloadBT);
@@ -224,7 +222,6 @@ const BaoTri = () => {
                   value={formData.noiDung} onChange={(e)=>setFormData({...formData, noiDung: e.target.value})} />
               </div>
 
-              {/* CHỈ HIỆN KHI Ở CHẾ ĐỘ SỬA ĐỂ BÁO ĐÃ SỬA XONG MÁY */}
               {modalMode === 'edit' && (
                 <div className="p-4 bg-[#1e293b] rounded-xl border border-[#007BFF]/30 mt-2">
                   <label className="text-xs text-[#007BFF] font-black uppercase block mb-2">Cập nhật trạng thái máy</label>

@@ -14,26 +14,21 @@ const Login = ({ onLoginSuccess }) => {
   setIsLoading(true);
 
   try {
-    // 1. Sửa URL về đúng TaiKhoanController
     const response = await axios.post('http://localhost:8080/api/taikhoan/login', {
-      tenDN: username, // Đảm bảo key này khớp với Map<String, String> credentials trong Java
+      tenDN: username,
       matKhau: password
     });
 
-    // 2. Nếu thành công (Axios tự hiểu status 200 là thành công)
     console.log("Đăng nhập thành công:", response.data);
     
-    // Lưu thông tin vào localStorage hoặc gọi hàm onLoginSuccess
-    // response.data lúc này là đối tượng TaiKhoan trả về từ Backend
+
     onLoginSuccess(response.data.quyenTruyCap); 
 
   } catch (err) {
-    // 3. QUAN TRỌNG: Lấy đúng câu báo lỗi từ Backend trả về
-    // Ví dụ: "Tài khoản của bạn đã bị khóa..."
+
     const message = err.response?.data || 'Có lỗi xảy ra, vui lòng thử lại!';
     setError(message); 
     
-    // In ra console để An dễ debug
     console.error("Lỗi đăng nhập:", message);
   } finally {
     setIsLoading(false);

@@ -1,15 +1,12 @@
--- Tạo kiểu dữ liệu Object chứa 1 dòng của báo cáo
 CREATE OR REPLACE TYPE TYPE_REVENUE_ROW AS OBJECT (
     TEN_GOI NVARCHAR2(100),
     SO_LUOT NUMBER,
     TONG_DOANH_THU NUMBER
 );
 /
--- Tạo kiểu Table chứa danh sách các dòng đó
 CREATE OR REPLACE TYPE TYPE_REVENUE_TABLE AS TABLE OF TYPE_REVENUE_ROW;
 /
 
--- Tạo Hàm Pipelined có nhận tham số thời gian
 CREATE OR REPLACE FUNCTION FN_GET_REVENUE_REPORT(p_TimeFilter IN VARCHAR2)
 RETURN TYPE_REVENUE_TABLE PIPELINED
 IS
@@ -21,13 +18,11 @@ BEGIN
         FROM HOADON hd
         JOIN DANGKY_GOITAP dk ON hd.MAHD = dk.MAHD
         JOIN GOITAP gt ON dk.MAGOI = gt.MAGOI
-        -- LOGIC LỌC ĐỘNG NẰM HOÀN TOÀN TẠI ĐÂY
         WHERE (p_TimeFilter = 'ALL')
            OR (p_TimeFilter = 'MONTH' AND TO_CHAR(hd.NGAYLAP, 'MM/YYYY') = TO_CHAR(SYSDATE, 'MM/YYYY'))
            OR (p_TimeFilter = 'YEAR' AND TO_CHAR(hd.NGAYLAP, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY'))
         GROUP BY ROLLUP(gt.TENGOI)
     ) LOOP
-        -- Đẩy từng dòng kết quả ra ngoài
         PIPE ROW(TYPE_REVENUE_ROW(rec.TEN_GOI, rec.SO_LUOT, rec.TONG_DOANH_THU));
     END LOOP;
     RETURN;

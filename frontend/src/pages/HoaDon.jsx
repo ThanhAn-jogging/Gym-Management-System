@@ -8,7 +8,6 @@ const HoaDon = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOption, setSortOption] = useState('date-desc'); 
 
-  // Chỉ giữ lại State cho Modal In Hóa Đơn
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [printData, setPrintData] = useState(null);
 
@@ -22,7 +21,6 @@ const HoaDon = () => {
       const hoadonData = hdRes.data;
       const hoivienData = hvRes.data;
       
-      // Ghép tên hội viên
       const enrichedData = hoadonData.map(hd => {
         const hvInfo = hoivienData.find(hv => String(hv.maHV).trim() === String(hd.maHV).trim());
         return {

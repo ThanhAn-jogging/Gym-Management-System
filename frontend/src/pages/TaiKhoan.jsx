@@ -5,7 +5,6 @@ import axios from 'axios';
 const TaiKhoan = () => {
   const [accounts, setAccounts] = useState([]);
   
-  // State lưu danh sách để làm DropBox (Đã bỏ Hội viên)
   const [pts, setPts] = useState([]);
   const [nvs, setNvs] = useState([]);
 
@@ -13,16 +12,13 @@ const TaiKhoan = () => {
   const [filterRole, setFilterRole] = useState('Tất cả');
   const [sortOption, setSortOption] = useState('az');
 
-  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   
-  // Đặt mặc định trạng thái là "Hoạt động", quyền mặc định là "Lễ tân"
   const [formData, setFormData] = useState({
     tenDN: '', matKhau: '', quyenTruyCap: 'Lễ tân', maNV: '', maPT: '', trangThai: 'Hoạt động'
   });
 
-  // GỌI CÙNG LÚC 3 API ĐỂ ĐỔ DỮ LIỆU VÀO DROPBOX
   const fetchData = async () => {
     try {
       const [resAcc, resPT, resNV] = await Promise.all([
@@ -38,7 +34,6 @@ const TaiKhoan = () => {
 
   useEffect(() => { fetchData(); }, []);
 
-  // Xử lý Lọc và Sắp xếp
   let processedAccounts = accounts.filter(acc => {
     const matchSearch = acc.tenDN?.toLowerCase().includes(searchTerm.toLowerCase()) || 
                         acc.maNV?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -53,7 +48,6 @@ const TaiKhoan = () => {
     return 0;
   });
 
-  // Khi đổi Quyền, tự động xóa các mã liên kết cũ để tránh rác dữ liệu
   const handleRoleChange = (role) => {
     setFormData({ ...formData, quyenTruyCap: role, maNV: '', maPT: '', trangThai: 'Hoạt động' });
   };
@@ -67,7 +61,7 @@ const TaiKhoan = () => {
         await axios.put(`http://localhost:8080/api/taikhoan/${formData.tenDN}`, formData);
       }
       setIsModalOpen(false);
-      fetchData(); // Load lại toàn bộ data
+      fetchData();
     } catch (error) { 
       alert(error.response?.data || "Lỗi khi lưu tài khoản! Vui lòng kiểm tra lại dữ liệu."); 
     }

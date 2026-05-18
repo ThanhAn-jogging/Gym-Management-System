@@ -1,6 +1,4 @@
---------------------------------------------------------
--- PHẦN 1: XÓA CÁC BẢNG CŨ (NẾU CÓ) ĐỂ TRÁNH LỖI TRÙNG LẶP
---------------------------------------------------------
+
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE BAOLUU CASCADE CONSTRAINTS';
    EXECUTE IMMEDIATE 'DROP TABLE LICHTAP_PT CASCADE CONSTRAINTS';
@@ -25,9 +23,6 @@ EXCEPTION
 END;
 /
 
---------------------------------------------------------
--- PHẦN 2: TẠO BẢNG DANH MỤC (KHÔNG CHỨA KHÓA NGOẠI)
---------------------------------------------------------
 
 -- 1. BẢNG GÓI TẬP
 CREATE TABLE GOITAP (
@@ -92,9 +87,6 @@ CREATE TABLE NHANVIEN (
     CONSTRAINT PK_NHANVIEN PRIMARY KEY (MaNV)
 );
 
---------------------------------------------------------
--- PHẦN 3: TẠO BẢNG CÓ KHÓA NGOẠI CẤP 1
---------------------------------------------------------
 
 -- 6. BẢNG HUẤN LUYỆN VIÊN (Liên kết với NHANVIEN)
 CREATE TABLE HUANLUYENVIEN (
@@ -150,9 +142,6 @@ CREATE TABLE HOADON (
     CONSTRAINT FK_HD_GOI FOREIGN KEY (MaGoi) REFERENCES GOITAP(MaGoi)
 );
 
---------------------------------------------------------
--- PHẦN 4: TẠO BẢNG CÓ KHÓA NGOẠI CẤP 2 (Phụ thuộc vào các bảng trên)
---------------------------------------------------------
 
 -- 10. BẢNG LỚP HỌC (Liên kết với HUANLUYENVIEN)
 CREATE TABLE LOPHOC (
@@ -197,9 +186,7 @@ CREATE TABLE LICHTAP_PT (
     CONSTRAINT FK_LICH_PT FOREIGN KEY (MaPT) REFERENCES HUANLUYENVIEN(MaPT)
 );
 
---------------------------------------------------------
--- PHẦN 5: TẠO BẢNG CÓ KHÓA NGOẠI CẤP 3 (Phụ thuộc vào cấp 2)
---------------------------------------------------------
+
 
 -- 13. BẢNG ĐĂNG KÝ LỚP HỌC (Liên kết với HOIVIEN, LOPHOC)
 CREATE TABLE DANGKY_LOPHOC (

@@ -53,7 +53,6 @@ const NhanVien = () => {
     s.chucVu?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Hàm chia màu cho từng chức vụ
   const getRoleColor = (role) => {
     switch (role) {
       case 'Quản lý':

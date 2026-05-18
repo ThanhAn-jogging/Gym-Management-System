@@ -31,7 +31,6 @@ const Voucher = () => {
       setIsModalOpen(false);
       fetchVouchers();
     } catch (error) { 
-      // Bắt lỗi Oracle: VD "Ngày hết hạn không thể nằm trong quá khứ"
       alert(error.response?.data || "Lỗi khi lưu dữ liệu Voucher!"); 
     }
   };
@@ -49,7 +48,6 @@ const Voucher = () => {
 
   const isExpired = (date) => new Date(date) < new Date();
 
-  // Thống kê
   const activeCount = vouchers.filter(v => !isExpired(v.ngayHetHan)).length;
   const expiredCount = vouchers.length - activeCount;
 

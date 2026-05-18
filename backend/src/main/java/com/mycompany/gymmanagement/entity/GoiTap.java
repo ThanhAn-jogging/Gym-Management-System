@@ -27,11 +27,9 @@ public class GoiTap {
     @Column(name = "MOTA")
     private String moTa;
 
-    // --- CỘT MỚI THÊM VÀO ---
     @Column(name = "QUYENGOITAP")
     private String quyenGoiTap;
 
-    // Đếm tự động số lượng đăng ký thực tế từ bảng DANGKY_GOITAP
     @Formula("(SELECT COUNT(*) FROM DANGKY_GOITAP d WHERE d.MAGOI = MAGOI)")
     private Integer luotDangKy;
 }

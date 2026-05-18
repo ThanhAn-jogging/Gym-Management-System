@@ -12,7 +12,6 @@ CREATE OR REPLACE PROCEDURE SP_CAPNHAT_LICHTAP_PT (
     v_DayOfWeek VARCHAR2(10);
     v_ThuVN VARCHAR2(20);
 BEGIN
-    -- Nếu người ta chuyển sang 'Đã hủy' thì cho qua luôn, không cần check trùng lịch nữa
     IF p_TrangThai != 'Đã hủy' THEN
         v_DayOfWeek := TO_CHAR(p_NgayTap, 'DY', 'NLS_DATE_LANGUAGE=ENGLISH');
         v_ThuVN := CASE v_DayOfWeek
@@ -20,7 +19,6 @@ BEGIN
             WHEN 'THU' THEN '5' WHEN 'FRI' THEN '6' WHEN 'SAT' THEN '7' WHEN 'SUN' THEN 'Chủ Nhật'
         END;
 
-        -- 1. Trùng Lớp học
         SELECT COUNT(*) INTO v_CountLop FROM LOPHOC
         WHERE MAPT = p_MaPT AND KHUNGGIO = p_KhungGio
           AND (UPPER(NGAYTAP) LIKE '%' || UPPER(v_ThuVN) || '%' OR UPPER(NGAYTAP) LIKE '%HẰNG NGÀY%');
@@ -28,7 +26,6 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20003, 'Lỗi: Huấn luyện viên đang kẹt dạy Lớp Học vào khung giờ này!');
         END IF;
 
-        -- 2. Trùng PT (Loại trừ chính cái lịch đang sửa)
         SELECT COUNT(*) INTO v_CountPT FROM LICHTAP_PT 
         WHERE MaPT = p_MaPT AND NgayTap = p_NgayTap AND KhungGio = p_KhungGio 
           AND TrangThaiBuoiTap != 'Đã hủy' AND MaLich != p_MaLich;
@@ -36,7 +33,6 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20001, 'Lỗi: Huấn luyện viên đã có lịch dạy cá nhân khác!');
         END IF;
 
-        -- 3. Trùng HV (Loại trừ chính cái lịch đang sửa)
         SELECT COUNT(*) INTO v_CountHV FROM LICHTAP_PT 
         WHERE MaHV = p_MaHV AND NgayTap = p_NgayTap AND KhungGio = p_KhungGio 
           AND TrangThaiBuoiTap != 'Đã hủy' AND MaLich != p_MaLich;
@@ -45,7 +41,6 @@ BEGIN
         END IF;
     END IF;
 
-    -- UPDATE DỮ LIỆU
     UPDATE LICHTAP_PT
     SET MaHV = p_MaHV, MaPT = p_MaPT, NgayTap = p_NgayTap, KhungGio = p_KhungGio, TrangThaiBuoiTap = p_TrangThai
     WHERE MaLich = p_MaLich;

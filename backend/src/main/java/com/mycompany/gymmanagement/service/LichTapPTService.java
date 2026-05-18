@@ -19,7 +19,6 @@ public class LichTapPTService {
 
     @Transactional
     public void dangKyLichTap(String maHV, String maPT, LocalDate ngayTap, String khungGio) {
-        // Chỉ truyền 4 tham số
         lichTapPTRepository.dangKyLichTap(maHV, maPT, ngayTap, khungGio);
     }
 

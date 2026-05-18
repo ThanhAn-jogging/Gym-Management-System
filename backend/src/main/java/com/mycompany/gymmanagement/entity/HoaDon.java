@@ -35,7 +35,6 @@ public class HoaDon {
     @Column(name = "TRANGTHAIHD")
     private String trangThaiHD;
 
-    // Trong file HoaDon.java, thêm thuộc tính này:
     @Column(name = "MAGOI")
     private String maGoi;
 }

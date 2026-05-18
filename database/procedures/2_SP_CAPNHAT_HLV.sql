@@ -5,7 +5,6 @@ CREATE OR REPLACE PROCEDURE SP_CAPNHAT_HLV (
     p_BangCap IN NVARCHAR2,
     p_KinhNghiem IN NUMBER,
     p_Rating IN NUMBER
-    -- Đã xóa p_SoHocVien
 ) AS
 BEGIN
     UPDATE HUANLUYENVIEN
@@ -14,7 +13,6 @@ BEGIN
         BANGCAP = p_BangCap,
         KINHNGHIEM = p_KinhNghiem,
         RATING = p_Rating
-        -- Đã xóa cập nhật SoHocVien
     WHERE MAPT = p_MaPT;
     COMMIT;
 END;

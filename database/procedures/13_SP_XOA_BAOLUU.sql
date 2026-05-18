@@ -11,10 +11,8 @@ BEGIN
 
     v_SoNgay := v_NgayKetThuc - v_NgayBatDau;
 
-    -- Xóa phiếu bảo lưu
     DELETE FROM BAOLUU WHERE MaBaoLuu = p_MaBaoLuu;
 
-    -- TRỪ đi số ngày đã lỡ cộng vào gói tập
     UPDATE DANGKY_GOITAP SET NgayKetThuc = NgayKetThuc - v_SoNgay WHERE MaDK = v_MaDK;
     COMMIT;
 END;

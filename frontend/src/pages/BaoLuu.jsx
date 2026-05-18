@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const BaoLuu = () => {
   const [baoLuuList, setBaoLuuList] = useState([]);
-  const [dangKyList, setDangKyList] = useState([]); // Dùng cho Dropdown
+  const [dangKyList, setDangKyList] = useState([]); 
   const [searchTerm, setSearchTerm] = useState('');
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,10 +19,9 @@ const BaoLuu = () => {
     try {
       const [resBaoLuu, resDangKy] = await Promise.all([
         axios.get('http://localhost:8080/api/baoluu'),
-        axios.get('http://localhost:8080/api/dangky-goitap') // API lấy danh sách mã đăng ký
+        axios.get('http://localhost:8080/api/dangky-goitap') 
       ]);
       setBaoLuuList(resBaoLuu.data);
-      // Lọc ra những gói tập chưa hết hạn để ưu tiên hiển thị ở dropdown
       setDangKyList(resDangKy.data.filter(dk => dk.trangThai !== 'Hết hạn'));
     } catch (error) {
       console.error('Lỗi tải dữ liệu:', error);

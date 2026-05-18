@@ -42,14 +42,11 @@ const DangKyGoiTap = () => {
     (dk.maHV && dk.maHV.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  // Xử lý Thêm hoặc Sửa
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Lấy từ localStorage ra
       let currentMaNV = localStorage.getItem('maNV');
       
-      // PHÉP PHIÊN DỊCH: Nếu tên đăng nhập là 'admin', tự động hiểu là 'NV001'
       if (!currentMaNV || currentMaNV.toLowerCase() === 'admin') {
         currentMaNV = 'NV001';
       }
@@ -57,14 +54,12 @@ const DangKyGoiTap = () => {
       const submitData = { 
         ...formData, 
         maVoucher: formData.maVoucher || null,
-        maNV: currentMaNV // Gửi NV001 xuống Oracle
+        maNV: currentMaNV 
       };
       
       if (isEditMode) {
-        // Gọi API PUT để sửa
         await axios.put(`http://localhost:8080/api/dangky-goitap/${editId}`, submitData);
       } else {
-        // Gọi API POST để đăng ký mới qua Procedure
         await axios.post('http://localhost:8080/api/dangky-goitap', submitData);
       }
       
@@ -75,7 +70,6 @@ const DangKyGoiTap = () => {
     }
   };
 
-  // Nút mở form Sửa
   const handleEdit = (dk) => {
     setIsEditMode(true);
     setEditId(dk.maDK);
@@ -83,13 +77,12 @@ const DangKyGoiTap = () => {
       maHV: dk.maHV,
       maGoi: dk.maGoi,
       ngayBatDau: dk.ngayBatDau,
-      maVoucher: '', // Sửa không áp lại voucher
+      maVoucher: '',
       phuongThucTT: 'Tiền mặt'
     });
     setIsModalOpen(true);
   };
 
-  // Nút Xóa
   const handleDelete = async (id) => {
     if (window.confirm(`Bạn có chắc chắn muốn xóa đăng ký ${id}? Thao tác này không xóa hóa đơn liên quan.`)) {
       try {

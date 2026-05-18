@@ -2,7 +2,6 @@ CREATE OR REPLACE TRIGGER TRG_CHECK_AGE_LIMIT
 BEFORE INSERT OR UPDATE ON HOIVIEN
 FOR EACH ROW
 BEGIN
-    -- Tính tuổi dựa trên NgayDangKy và NgaySinh [cite: 338]
     IF EXTRACT(YEAR FROM :NEW.NgayDangKy) - EXTRACT(YEAR FROM :NEW.NgaySinh) < 15 THEN
         RAISE_APPLICATION_ERROR(-20009, 'Lỗi: Hội viên phải từ 15 tuổi trở lên.');
     END IF;

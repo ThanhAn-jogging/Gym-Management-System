@@ -1,6 +1,3 @@
---------------------------------------------------------
--- TỔNG HỢP CÁC VIEW (KHUNG NHÌN) PHỤC VỤ DASHBOARD & BÁO CÁO
---------------------------------------------------------
 
 -- 1. View Thống kê các chỉ số tổng quan (Thẻ số liệu)
 CREATE OR REPLACE VIEW VW_DASHBOARD_STATS AS

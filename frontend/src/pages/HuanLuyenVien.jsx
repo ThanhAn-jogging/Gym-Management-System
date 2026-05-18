@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const HuanLuyenVien = () => {
   const [pts, setPts] = useState([]);
-  const [availableStaff, setAvailableStaff] = useState([]); // Chứa danh sách NV là Huấn luyện viên
+  const [availableStaff, setAvailableStaff] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOption, setSortOption] = useState('rating-desc');
   
@@ -14,7 +14,6 @@ const HuanLuyenVien = () => {
     maPT: '', maNV: '', chuyenMon: 'Thể hình cơ bản', bangCap: '', kinhNghiem: 0, rating: 0
   });
 
-  // 1. Lấy danh sách PT hiện có
   const fetchPTs = async () => {
     try {
       const response = await axios.get('http://localhost:8080/api/huanluyenvien');
@@ -22,7 +21,6 @@ const HuanLuyenVien = () => {
     } catch (error) { console.error('Lỗi lấy danh sách PT:', error); }
   };
 
-  // 2. Lấy danh sách các nhân viên có chức vụ "Huấn luyện viên"
   const fetchAvailableStaff = async () => {
     try {
       const res = await axios.get('http://localhost:8080/api/nhanvien/chuc-vu/Huấn luyện viên');
@@ -39,7 +37,6 @@ const HuanLuyenVien = () => {
     e.preventDefault();
     try {
       if (modalMode === 'add') {
-        // Gán maNV mặc định nếu người dùng không chọn gì mà bấm Lưu luôn
         const finalData = { ...formData, maNV: formData.maNV || availableStaff[0]?.maNV };
         await axios.post('http://localhost:8080/api/huanluyenvien', finalData);
       } else {
@@ -63,7 +60,6 @@ const HuanLuyenVien = () => {
 
   const handleOpenAdd = () => {
     setModalMode('add');
-    // Khi mở modal thêm, tự động chọn người đầu tiên trong dropbox làm mặc định
     const defaultMaNV = availableStaff.length > 0 ? availableStaff[0].maNV : '';
     setFormData({maPT: '', maNV: defaultMaNV, chuyenMon: 'Thể hình cơ bản', bangCap: '', kinhNghiem: 0, rating: 0});
     setIsModalOpen(true);

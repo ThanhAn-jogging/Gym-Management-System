@@ -81,7 +81,6 @@ const Sidebar = ({ activePage, setActivePage, userRole }) => {
       label: 'Đăng ký gói', 
       roles: ['Quản lý', 'Lễ tân'] 
     },
-    // ĐÃ CHUYỂN XUỐNG DƯỚI CÙNG VÀ ĐỔI TÊN
     { 
       icon: <ClipboardCheck size={20} />, 
       label: 'Đăng ký lớp học', 

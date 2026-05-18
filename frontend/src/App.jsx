@@ -33,7 +33,7 @@ function App() {
         return <NhanVien />;
       case 'Huấn luyện viên':
         return <HuanLuyenVien />;
-      case 'Lịch tập PT': // Đã thêm luồng hiển thị cho Lịch tập PT
+      case 'Lịch tập PT':
         return <LichTapPT />;
       case 'Tài khoản':
         return <TaiKhoan />;
@@ -55,7 +55,7 @@ function App() {
         return <Voucher />;
       case 'Đăng ký gói':
         return <DangKyGoiTap />;
-      case 'Đăng ký lớp học': // Tên mới ở đây
+      case 'Đăng ký lớp học':
         return <DangKyLopHoc />;
       default:
         return <Dashboard />;

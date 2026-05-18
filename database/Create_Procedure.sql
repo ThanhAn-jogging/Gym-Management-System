@@ -1,10 +1,3 @@
---------------------------------------------------------
--- TỔNG HỢP CÁC STORED PROCEDURE XỬ LÝ NGHIỆP VỤ
---------------------------------------------------------
-
---------------------------------------------------------
--- 1. MODULE QUẢN LÝ HỘI VIÊN
---------------------------------------------------------
 
 -- 1.1 Thêm Hội Viên
 CREATE OR REPLACE PROCEDURE SP_THEM_HOIVIEN (
@@ -70,9 +63,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 2. MODULE QUẢN LÝ NHÂN VIÊN
---------------------------------------------------------
 
 -- 2.1 Thêm Nhân Viên
 CREATE OR REPLACE PROCEDURE SP_THEM_NHANVIEN (
@@ -84,7 +74,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_NHANVIEN (
 ) AS
     v_NewMaNV VARCHAR2(10);
 BEGIN
-    -- Tự sinh mã theo format NV + số thứ tự (ví dụ: NV001, NV002)
     v_NewMaNV := 'NV' || LPAD(SEQ_NHANVIEN.NEXTVAL, 3, '0');
 
     INSERT INTO NHANVIEN (MANV, HOTEN, CHUCVU, SDT, LUONGCB, NGAYVAOLAM)
@@ -126,9 +115,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 3. MODULE QUẢN LÝ HUẤN LUYỆN VIÊN (PT)
---------------------------------------------------------
 
 -- 3.1 Thêm Huấn Luyện Viên
 CREATE OR REPLACE PROCEDURE SP_THEM_HLV (
@@ -138,7 +124,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_HLV (
     p_BangCap IN NVARCHAR2,
     p_KinhNghiem IN NUMBER,
     p_Rating IN NUMBER
-    -- Đã xóa p_SoHocVien
 ) AS
     v_ChucVu NVARCHAR2(100);
 BEGIN
@@ -150,7 +135,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Nhân viên này không có chức vụ là Huấn luyện viên!');
     END IF;
 
-    -- Đã xóa SoHocVien khỏi câu lệnh Insert
     INSERT INTO HUANLUYENVIEN (MAPT, MANV_LIENKET, CHUYENMON, BANGCAP, KINHNGHIEM, RATING)
     VALUES (p_MaPT, p_MaNV, p_ChuyenMon, p_BangCap, p_KinhNghiem, p_Rating);
     
@@ -169,7 +153,6 @@ CREATE OR REPLACE PROCEDURE SP_CAPNHAT_HLV (
     p_BangCap IN NVARCHAR2,
     p_KinhNghiem IN NUMBER,
     p_Rating IN NUMBER
-    -- Đã xóa p_SoHocVien
 ) AS
 BEGIN
     UPDATE HUANLUYENVIEN
@@ -193,9 +176,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 4. MODULE QUẢN LÝ TÀI KHOẢN HỆ THỐNG
---------------------------------------------------------
 
 -- 4.1 Thêm Tài Khoản
 CREATE OR REPLACE PROCEDURE SP_THEM_TAIKHOAN (
@@ -254,9 +234,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 5. MODULE QUẢN LÝ GÓI TẬP
---------------------------------------------------------
 
 -- 5.1 Thêm Gói Tập
 CREATE OR REPLACE PROCEDURE SP_THEM_GOITAP (
@@ -268,7 +245,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_GOITAP (
 ) AS
     v_NewMaGoi VARCHAR2(10);
 BEGIN
-    -- Ràng buộc logic dữ liệu
     IF p_DonGia < 0 THEN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Đơn giá không được nhỏ hơn 0!');
     END IF;
@@ -276,7 +252,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20002, N'Lỗi: Thời gian hiệu lực phải lớn hơn 0!');
     END IF;
 
-    -- Tự sinh mã
     v_NewMaGoi := 'GT' || LPAD(SEQ_GOITAP.NEXTVAL, 3, '0');
 
     INSERT INTO GOITAP (MAGOI, TENGOI, DONGIA, THOIGIANHIEULUC, MOTA, QUYENGOITAP)
@@ -286,7 +261,6 @@ BEGIN
 END;
 /
 
--- 5.2 Cập nhật Gói Tập
 CREATE OR REPLACE PROCEDURE SP_CAPNHAT_GOITAP (
     p_MaGoi IN VARCHAR2,
     p_TenGoi IN NVARCHAR2,
@@ -322,9 +296,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 6. MODULE QUẢN LÝ LỚP HỌC
---------------------------------------------------------
 
 -- 6.1 Thêm Lớp Học
 CREATE OR REPLACE PROCEDURE SP_THEM_LOPHOC (
@@ -396,9 +367,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 7. MODULE QUẢN LÝ THIẾT BỊ
---------------------------------------------------------
 
 -- 7.1 Thêm Thiết Bị
 CREATE OR REPLACE PROCEDURE SP_THEM_THIETBI (
@@ -410,7 +378,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_THIETBI (
 ) AS
     v_NewMaTB VARCHAR2(10);
 BEGIN
-    -- Tự sinh mã
     v_NewMaTB := 'TB' || LPAD(SEQ_THIETBI.NEXTVAL, 3, '0');
 
     INSERT INTO THIETBI (MATB, TENTB, LOAIMAY, NGAYMUA, VITRI, TINHTRANG)
@@ -447,9 +414,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 8. MODULE QUẢN LÝ BẢO TRÌ
---------------------------------------------------------
 
 -- 8.1 Thêm Phiếu Bảo Trì
 CREATE OR REPLACE PROCEDURE SP_THEM_BAOTRI (
@@ -460,7 +424,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_BAOTRI (
 ) AS
     v_NewMaPhieu VARCHAR2(10);
 BEGIN
-    -- Sinh mã tự động
     v_NewMaPhieu := 'BT' || LPAD(SEQ_BAOTRI.NEXTVAL, 3, '0');
     
     INSERT INTO BAOTRI (MAPHIEUBT, MATB, NGAYBAOTRI, NOIDUNG, CHIPHI)
@@ -476,14 +439,13 @@ CREATE OR REPLACE PROCEDURE SP_CAPNHAT_BAOTRI (
     p_NgayBaoTri IN DATE,
     p_NoiDung IN NVARCHAR2,
     p_ChiPhi IN NUMBER,
-    p_TinhTrangMay IN NVARCHAR2 -- Tham số phụ để báo cho DB biết đã sửa xong chưa
+    p_TinhTrangMay IN NVARCHAR2
 ) AS
 BEGIN
     UPDATE BAOTRI
     SET MATB = p_MaTB, NGAYBAOTRI = p_NgayBaoTri, NOIDUNG = p_NoiDung, CHIPHI = p_ChiPhi
     WHERE MAPHIEUBT = p_MaPhieuBT;
 
-    -- Nếu giao diện gởi lệnh "Đã sửa xong" -> Cập nhật lại máy thành Hoạt động
     UPDATE THIETBI SET TINHTRANG = p_TinhTrangMay WHERE MATB = p_MaTB;
     
     COMMIT;
@@ -500,10 +462,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 9. MODULE QUẢN LÝ VOUCHER
---------------------------------------------------------
-
 -- 9.1 Thêm Voucher
 CREATE OR REPLACE PROCEDURE SP_THEM_VOUCHER (
     p_TenVoucher IN NVARCHAR2,
@@ -514,7 +472,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_VOUCHER (
 ) AS
     v_NewMaVoucher VARCHAR2(10);
 BEGIN
-    -- Các ràng buộc nghiệp vụ (Business Rules)
     IF p_PhanTramGiam <= 0 OR p_PhanTramGiam > 100 THEN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Phần trăm giảm giá phải nằm trong khoảng từ 1% đến 100%!');
     END IF;
@@ -527,7 +484,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20003, N'Lỗi: Ngày hết hạn không thể nằm trong quá khứ!');
     END IF;
 
-    -- Tự sinh mã
     v_NewMaVoucher := 'VC' || LPAD(SEQ_VOUCHER.NEXTVAL, 3, '0');
 
     INSERT INTO VOUCHER (MAVOUCHER, TENVOUCHER, LOAIVOUCHER, PHANTRAMGIAM, GIATRITOITHIEU, NGAYHETHAN)
@@ -537,7 +493,6 @@ BEGIN
 END;
 /
 
--- 9.2 Cập nhật Voucher
 CREATE OR REPLACE PROCEDURE SP_CAPNHAT_VOUCHER (
     p_MaVoucher IN VARCHAR2,
     p_TenVoucher IN NVARCHAR2,
@@ -555,7 +510,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20002, N'Lỗi: Giá trị đơn tối thiểu không được là số âm!');
     END IF;
     
-    -- Khi cập nhật cũng không được gia hạn lùi về quá khứ
     IF p_NgayHetHan < TRUNC(SYSDATE) THEN
         RAISE_APPLICATION_ERROR(-20003, N'Lỗi: Ngày hết hạn không thể nằm trong quá khứ!');
     END IF;
@@ -569,7 +523,6 @@ BEGIN
 END;
 /
 
--- 9.3 Xóa Voucher
 CREATE OR REPLACE PROCEDURE SP_XOA_VOUCHER (
     p_MaVoucher IN VARCHAR2
 ) AS
@@ -579,10 +532,6 @@ BEGIN
 END;
 /
 
-
---------------------------------------------------------
--- 10. MODULE QUẢN LÝ ĐĂNG KÝ GÓI TẬP VÀ AUTO JOB
---------------------------------------------------------
 
 -- 10.1 Thêm Đăng Ký Gói Tập (Có xử lý Voucher và Hóa đơn đi kèm)
 CREATE OR REPLACE PROCEDURE SP_THEM_DANGKY_GOITAP (
@@ -601,27 +550,21 @@ CREATE OR REPLACE PROCEDURE SP_THEM_DANGKY_GOITAP (
     v_TongTien NUMBER;
     v_NgayKetThuc DATE;
 BEGIN
-    -- Lấy thông tin Gói tập (Giá và Ngày)
     SELECT DonGia, ThoiGianHieuLuc INTO v_DonGia, v_ThoiGian FROM GOITAP WHERE MaGoi = p_MaGoi;
     
-    -- Tính toán Ngày Kết Thúc
     v_NgayKetThuc := p_NgayBatDau + v_ThoiGian;
 
-    -- Tính Tiền
     IF p_MaVoucher IS NOT NULL THEN
         SELECT NVL(PhanTramGiam, 0) INTO v_PhanTramGiam FROM VOUCHER WHERE MaVoucher = p_MaVoucher;
     END IF;
     v_TongTien := v_DonGia * (1 - v_PhanTramGiam / 100);
 
-    -- Sinh mã tự động
     v_MaDK := 'DK' || LPAD(SEQ_DANGKY_GOITAP.NEXTVAL, 3, '0');
     v_MaHD := 'HD' || LPAD(SEQ_HOADON.NEXTVAL, 3, '0');
 
-    -- Insert Hóa Đơn (Trigger Hội viên sẽ tự động cộng điểm)
     INSERT INTO HOADON (MaHD, MaHV, MaNV, NgayLap, TongTien, MaVoucher, PhuongThucTT, TrangThaiHD, MAGOI)
     VALUES (v_MaHD, p_MaHV, p_MaNV, p_NgayBatDau, v_TongTien, p_MaVoucher, p_PhuongThucTT, 'Đã thanh toán', p_MaGoi);
 
-    -- Insert Đăng Ký
     INSERT INTO DANGKY_GOITAP (MaDK, MaHV, MaGoi, NgayBatDau, NgayKetThuc, MaHD, TrangThai)
     VALUES (v_MaDK, p_MaHV, p_MaGoi, p_NgayBatDau, v_NgayKetThuc, v_MaHD, 'Đang hoạt động');
 
@@ -637,10 +580,8 @@ CREATE OR REPLACE PROCEDURE SP_XOA_DANGKY_GOITAP (
 BEGIN
     SELECT MaHD INTO v_MaHD FROM DANGKY_GOITAP WHERE MaDK = p_MaDK;
 
-    -- Xóa Đăng ký trước để không dính khóa ngoại
     DELETE FROM DANGKY_GOITAP WHERE MaDK = p_MaDK;
     
-    -- Xóa Hóa Đơn (Trigger sẽ tự động trừ tiền của Hội viên đi)
     IF v_MaHD IS NOT NULL THEN
         DELETE FROM HOADON WHERE MaHD = v_MaHD;
     END IF;
@@ -652,7 +593,6 @@ END;
 -- 10.3 Procedure quét gói tập hết hạn hàng ngày
 CREATE OR REPLACE PROCEDURE SP_QUET_HETHAN_HANGNGAY AS
 BEGIN
-    -- Tìm những người đang hoạt động mà ngày kết thúc nhỏ hơn ngày hôm nay thì khóa lại
     UPDATE DANGKY_GOITAP
     SET TRANGTHAI = N'Hết hạn'
     WHERE TRANGTHAI = N'Đang hoạt động' 
@@ -663,7 +603,6 @@ END;
 
 -- 10.4 Cài đặt Job (Lịch trình) tự động chạy lúc 00:00 hàng đêm
 BEGIN
-    -- Bỏ qua lỗi nếu Job cũ chưa tồn tại
     BEGIN DBMS_SCHEDULER.DROP_JOB('JOB_AUTO_UPDATE_STATUS'); EXCEPTION WHEN OTHERS THEN NULL; END;
 
     DBMS_SCHEDULER.CREATE_JOB (
@@ -678,9 +617,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 11. MODULE QUẢN LÝ ĐĂNG KÝ LỚP HỌC
---------------------------------------------------------
 
 -- 11.1 Ghi danh Lớp Học
 CREATE OR REPLACE PROCEDURE SP_DANGKY_LOPHOC (
@@ -693,13 +629,11 @@ CREATE OR REPLACE PROCEDURE SP_DANGKY_LOPHOC (
     v_QuyenHopLe NUMBER;
     v_DaDangKy NUMBER;
 BEGIN
-    -- Kiểm tra xem HV đã đăng ký lớp này chưa
     SELECT COUNT(*) INTO v_DaDangKy FROM DANGKY_LOPHOC WHERE MaHV = p_MaHV AND MaLop = p_MaLop;
     IF v_DaDangKy > 0 THEN
         RAISE_APPLICATION_ERROR(-20004, N'Lỗi: Hội viên này đã ghi danh vào lớp này rồi!');
     END IF;
 
-    -- Lấy thông tin lớp học và kiểm tra sĩ số
     SELECT NVL(SoLuongHienTai, 0), NVL(SoLuongToiDa, 0), LoaiLop
     INTO v_HienTai, v_ToiDa, v_LoaiLop
     FROM LOPHOC
@@ -709,7 +643,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Lớp học này đã đạt giới hạn tối đa (' || v_ToiDa || N' người).');
     END IF;
 
-    -- Kiểm tra chéo Quyền lợi từ Gói tập còn hạn
     SELECT COUNT(*) INTO v_QuyenHopLe
     FROM DANGKY_GOITAP dk
     JOIN GOITAP gt ON dk.MaGoi = gt.MaGoi
@@ -721,7 +654,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20003, N'Từ chối: Hội viên không có Gói tập đang hoạt động hỗ trợ môn ' || v_LoaiLop || '!');
     END IF;
 
-    -- Tiến hành ghi danh và cập nhật sĩ số
     INSERT INTO DANGKY_LOPHOC (MaHV, MaLop, NgayDangKy)
     VALUES (p_MaHV, p_MaLop, TRUNC(SYSDATE));
     
@@ -737,10 +669,8 @@ CREATE OR REPLACE PROCEDURE SP_HUY_DANGKY_LOPHOC (
     p_MaLop IN VARCHAR2
 ) AS
 BEGIN
-    -- Xóa tên khỏi sổ đăng ký
     DELETE FROM DANGKY_LOPHOC WHERE MaHV = p_MaHV AND MaLop = p_MaLop;
     
-    -- Chỉ giảm sĩ số nếu việc XÓA ở trên thực sự thành công
     IF SQL%ROWCOUNT > 0 THEN
         UPDATE LOPHOC 
         SET SoLuongHienTai = GREATEST(NVL(SoLuongHienTai, 0) - 1, 0) 
@@ -751,9 +681,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 12. MODULE QUẢN LÝ LỊCH TẬP PT (HUẤN LUYỆN VIÊN CÁ NHÂN)
---------------------------------------------------------
 
 -- 12.1 Đặt Lịch Tập Mới
 CREATE OR REPLACE PROCEDURE SP_DAT_LICH_PT (
@@ -769,17 +696,14 @@ CREATE OR REPLACE PROCEDURE SP_DAT_LICH_PT (
     v_DayOfWeek VARCHAR2(10);
     v_ThuVN VARCHAR2(20);
 BEGIN
-    -- Tự sinh mã lịch
     v_NewMaLich := 'LT' || LPAD(SEQ_LICHTAP_PT.NEXTVAL, 3, '0');
 
-    -- Phân tích Thứ trong tuần
     v_DayOfWeek := TO_CHAR(p_NgayTap, 'DY', 'NLS_DATE_LANGUAGE=ENGLISH');
     v_ThuVN := CASE v_DayOfWeek
         WHEN 'MON' THEN '2' WHEN 'TUE' THEN '3' WHEN 'WED' THEN '4'
         WHEN 'THU' THEN '5' WHEN 'FRI' THEN '6' WHEN 'SAT' THEN '7' WHEN 'SUN' THEN 'Chủ Nhật'
     END;
 
-    -- Ràng buộc 1: Kiểm tra trùng Lớp học nhóm của PT
     SELECT COUNT(*) INTO v_CountLop FROM LOPHOC
     WHERE MAPT = p_MaPT AND KHUNGGIO = p_KhungGio
       AND (UPPER(NGAYTAP) LIKE '%' || UPPER(v_ThuVN) || '%' OR UPPER(NGAYTAP) LIKE '%HẰNG NGÀY%');
@@ -787,7 +711,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20003, 'Lỗi: Huấn luyện viên đang kẹt dạy Lớp Học vào khung giờ này!');
     END IF;
 
-    -- Ràng buộc 2: Kiểm tra trùng lịch PT cá nhân khác
     SELECT COUNT(*) INTO v_CountPT FROM LICHTAP_PT 
     WHERE MaPT = p_MaPT AND NgayTap = p_NgayTap AND KhungGio = p_KhungGio 
       AND (TrangThaiBuoiTap IS NULL OR TrangThaiBuoiTap != 'Đã hủy');
@@ -795,7 +718,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, 'Lỗi: Huấn luyện viên đã có lịch dạy cá nhân khác!');
     END IF;
 
-    -- Ràng buộc 3: Kiểm tra trùng lịch của Hội viên
     SELECT COUNT(*) INTO v_CountHV FROM LICHTAP_PT 
     WHERE MaHV = p_MaHV AND NgayTap = p_NgayTap AND KhungGio = p_KhungGio 
       AND (TrangThaiBuoiTap IS NULL OR TrangThaiBuoiTap != 'Đã hủy');
@@ -803,7 +725,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20002, 'Lỗi: Hội viên này đã bị trùng lịch tập khác!');
     END IF;
 
-    -- Tiến hành Insert
     INSERT INTO LICHTAP_PT (MaLich, MaHV, MaPT, NgayTap, KhungGio, TrangThaiBuoiTap)
     VALUES (v_NewMaLich, p_MaHV, p_MaPT, p_NgayTap, p_KhungGio, 'Sắp diễn ra');
 
@@ -811,7 +732,6 @@ BEGIN
 END;
 /
 
--- 12.2 Cập nhật Lịch Tập
 CREATE OR REPLACE PROCEDURE SP_CAPNHAT_LICHTAP_PT (
     p_MaLich IN VARCHAR2,
     p_MaHV IN VARCHAR2,
@@ -826,7 +746,6 @@ CREATE OR REPLACE PROCEDURE SP_CAPNHAT_LICHTAP_PT (
     v_DayOfWeek VARCHAR2(10);
     v_ThuVN VARCHAR2(20);
 BEGIN
-    -- Bỏ qua check trùng lịch nếu đang thao tác "Hủy"
     IF p_TrangThai != 'Đã hủy' THEN
         v_DayOfWeek := TO_CHAR(p_NgayTap, 'DY', 'NLS_DATE_LANGUAGE=ENGLISH');
         v_ThuVN := CASE v_DayOfWeek
@@ -874,9 +793,6 @@ BEGIN
 END;
 /
 
---------------------------------------------------------
--- 13. MODULE QUẢN LÝ BẢO LƯU GÓI TẬP
---------------------------------------------------------
 
 -- 13.1 Thêm Phiếu Bảo Lưu
 CREATE OR REPLACE PROCEDURE SP_THEM_BAOLUU (
@@ -889,12 +805,10 @@ CREATE OR REPLACE PROCEDURE SP_THEM_BAOLUU (
     v_NgayKT_Goi DATE;
     v_SoNgay NUMBER;
 BEGIN
-    -- Chốt 1: Ngày nghỉ phải hợp lý
     IF p_NgayBatDau > p_NgayKetThuc THEN
         RAISE_APPLICATION_ERROR(-20001, 'Lỗi: Ngày bắt đầu nghỉ không được lớn hơn ngày kết thúc!');
     END IF;
 
-    -- Chốt 2: Chỉ được bảo lưu gói tập trong thời hạn đang có
     SELECT NgayBatDau, NgayKetThuc INTO v_NgayBD_Goi, v_NgayKT_Goi FROM DANGKY_GOITAP WHERE MaDK = p_MaDK;
     IF p_NgayBatDau < v_NgayBD_Goi OR p_NgayBatDau > v_NgayKT_Goi THEN
         RAISE_APPLICATION_ERROR(-20002, 'Lỗi: Ngày xin bảo lưu phải nằm trong thời hạn của gói tập!');
@@ -902,11 +816,9 @@ BEGIN
 
     v_SoNgay := p_NgayKetThuc - p_NgayBatDau;
 
-    -- Lưu phiếu bảo lưu (Mã bảo lưu sẽ do Trigger TRG_BAOLUU_ID tự sinh)
     INSERT INTO BAOLUU (MaDK, NgayBatDauNghi, NgayKetThucNghi, LyDo)
     VALUES (p_MaDK, p_NgayBatDau, p_NgayKetThuc, p_LyDo);
 
-    -- CỘNG BÙ ngày nghỉ vào hạn sử dụng của gói tập
     UPDATE DANGKY_GOITAP SET NgayKetThuc = NgayKetThuc + v_SoNgay WHERE MaDK = p_MaDK;
     COMMIT;
 END;
@@ -935,10 +847,8 @@ BEGIN
     v_SoNgay_Cu := v_NgayKetThuc_Cu - v_NgayBatDau_Cu;
     v_SoNgay_Moi := p_NgayKetThuc_Moi - p_NgayBatDau_Moi;
 
-    -- Lấy ngày cũ TRỪ đi số ngày bảo lưu cũ (trả về nguyên trạng), rồi CỘNG số ngày bảo lưu mới
     UPDATE DANGKY_GOITAP SET NgayKetThuc = NgayKetThuc - v_SoNgay_Cu + v_SoNgay_Moi WHERE MaDK = p_MaDK;
     
-    -- Cập nhật thông tin phiếu
     UPDATE BAOLUU SET MaDK = p_MaDK, NgayBatDauNghi = p_NgayBatDau_Moi, NgayKetThucNghi = p_NgayKetThuc_Moi, LyDo = p_LyDo
     WHERE MaBaoLuu = p_MaBaoLuu;
     COMMIT;
@@ -959,18 +869,13 @@ BEGIN
 
     v_SoNgay := v_NgayKetThuc - v_NgayBatDau;
 
-    -- Xóa phiếu bảo lưu
     DELETE FROM BAOLUU WHERE MaBaoLuu = p_MaBaoLuu;
 
-    -- TRỪ đi số ngày đã lỡ cộng bù vào gói tập
     UPDATE DANGKY_GOITAP SET NgayKetThuc = NgayKetThuc - v_SoNgay WHERE MaDK = v_MaDK;
     COMMIT;
 END;
 /
 
---------------------------------------------------------
--- 14. MODULE QUẢN LÝ CHECK-IN / CHECK-OUT (LỄ TÂN)
---------------------------------------------------------
 
 -- 14.1 Xử lý Check-in Hội viên
 CREATE OR REPLACE PROCEDURE SP_CHECKIN_HOIVIEN (
@@ -983,13 +888,11 @@ AS
     v_MaCheckIn VARCHAR2(10);
     v_DangBaoLuu NUMBER;
 BEGIN
-    -- [BƯỚC 1]: KIỂM TRA TÌNH TRẠNG GÓI TẬP CỦA KHÁCH
     BEGIN
         SELECT MaDK INTO v_MaDK
         FROM DANGKY_GOITAP
         WHERE MaHV = p_MaHV 
           AND TRANGTHAI = N'Đang hoạt động' 
-          -- Dùng TRUNC để cắt bỏ giờ/phút/giây, so sánh cực chuẩn ngày hôm nay
           AND TRUNC(NgayKetThuc) >= TRUNC(SYSDATE)
           AND ROWNUM = 1;
     EXCEPTION
@@ -997,25 +900,20 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20031, N'Từ chối: Hội viên không có Gói tập nào đang hoạt động hoặc gói đã hết hạn!');
     END;
 
-    -- [BƯỚC 2]: KIỂM TRA ĐÓNG BĂNG (BẢO LƯU) - BAO GỒM CẢ NGÀY HÔM NAY
-    -- Đếm xem có phiếu bảo lưu nào mà ngày hôm nay nằm trong vùng nghỉ không
     SELECT COUNT(*) INTO v_DangBaoLuu
     FROM BAOLUU
     WHERE MaDK = v_MaDK 
       AND TRUNC(SYSDATE) >= TRUNC(NgayBatDauNghi) 
       AND TRUNC(SYSDATE) <= TRUNC(NgayKetThucNghi);
 
-    -- Nếu v_DangBaoLuu > 0 nghĩa là phát hiện đang nghỉ, giơ bảng cấm ngay!
     IF v_DangBaoLuu > 0 THEN
         RAISE_APPLICATION_ERROR(-20032, N'Từ chối: Gói tập của khách ĐANG BỊ BẢO LƯU, không thể Check-in!');
     END IF;
 
-    -- [BƯỚC 3]: TỰ ĐỘNG SINH MÃ CHECK-IN TĂNG DẦN
     SELECT 'CI' || LPAD(NVL(MAX(TO_NUMBER(SUBSTR(MaCheckIn, 3))), 0) + 1, 3, '0') 
     INTO v_MaCheckIn 
     FROM CHECKIN;
 
-    -- [BƯỚC 4]: MỞ CỬA CHO VÀO (LƯU XUỐNG DB)
     INSERT INTO CHECKIN(MaCheckIn, MaHV, MaDK, ThoiGianVao, ThoiGianRa) 
     VALUES (v_MaCheckIn, p_MaHV, v_MaDK, SYSDATE, NULL);
 

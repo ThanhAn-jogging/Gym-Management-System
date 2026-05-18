@@ -5,7 +5,6 @@ CREATE OR REPLACE PROCEDURE SP_THEM_HLV (
     p_BangCap IN NVARCHAR2,
     p_KinhNghiem IN NUMBER,
     p_Rating IN NUMBER
-    -- Đã xóa p_SoHocVien
 ) AS
     v_ChucVu NVARCHAR2(100);
 BEGIN
@@ -17,7 +16,6 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Nhân viên này không có chức vụ là Huấn luyện viên!');
     END IF;
 
-    -- Đã xóa SoHocVien khỏi câu lệnh Insert
     INSERT INTO HUANLUYENVIEN (MAPT, MANV_LIENKET, CHUYENMON, BANGCAP, KINHNGHIEM, RATING)
     VALUES (p_MaPT, p_MaNV, p_ChuyenMon, p_BangCap, p_KinhNghiem, p_Rating);
     

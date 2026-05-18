@@ -50,7 +50,6 @@ const Dashboard = () => {
           expiringMembers: res.data.expiringMembers || [],
           packageDistribution: res.data.packageDistribution || [],
           
-          // DÒNG QUAN TRỌNG NHẤT ĐỂ ĐỔ DỮ LIỆU VÀO BẢNG:
           revenueReport: res.data.revenueReport || []
         });
       } catch (e) { console.error(e); }
@@ -60,7 +59,6 @@ const Dashboard = () => {
 
   const formatMoney = (n) => n >= 1000000 ? (n/1000000).toFixed(1) + 'M' : n >= 1000 ? (n/1000).toFixed(1) + 'K' : n;
 
-  // Tính tổng số lượt đăng ký gói tập để quy đổi ra % tiến trình
   const totalPackageOrders = data.packageDistribution.reduce((sum, item) => sum + (item.value || 0), 0) || 1;
 
   return (

@@ -25,7 +25,6 @@ public class LopHoc {
     @Column(name = "SOLUONGTOIDA")
     private Integer soLuongToiDa;
 
-    // --- CỘT MỚI: ĐỂ CHỨA SĨ SỐ HIỆN TẠI TỪ DATABASE ---
     @Column(name = "SOLUONGHIENTAI")
     private Integer soLuongHienTai;
 

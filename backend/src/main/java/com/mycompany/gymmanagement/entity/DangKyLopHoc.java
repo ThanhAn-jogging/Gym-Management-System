@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "DANGKY_LOPHOC")
-@IdClass(DangKyLopHoc.DangKyLopHocId.class) // Khai báo rõ ràng là dùng class con bên trong
+@IdClass(DangKyLopHoc.DangKyLopHocId.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +24,6 @@ public class DangKyLopHoc {
     @Column(name = "NGAYDANGKY")
     private LocalDateTime ngayDangKy;
 
-    // Đưa class ID vào bên trong làm class tĩnh (static) cực kỳ gọn gàng
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

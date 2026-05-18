@@ -1,0 +1,9 @@
+# Chặn thư mục biên dịch của Java Spring Boot
+**/target/
+**/*.class
+
+# Chặn file cấu hình của các công cụ lập trình (IDE) sinh ra ở thư mục gốc
+.idea/
+.vscode/
+*.iml
+.DS_Store

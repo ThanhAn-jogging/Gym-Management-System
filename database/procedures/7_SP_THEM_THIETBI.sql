@@ -1,0 +1,18 @@
+CREATE OR REPLACE PROCEDURE SP_THEM_THIETBI (
+    p_TenTB IN NVARCHAR2,
+    p_LoaiMay IN NVARCHAR2,
+    p_NgayMua IN DATE,
+    p_ViTri IN NVARCHAR2,
+    p_TinhTrang IN NVARCHAR2
+) AS
+    v_NewMaTB VARCHAR2(10);
+BEGIN
+    -- Tự sinh mã
+    v_NewMaTB := 'TB' || LPAD(SEQ_THIETBI.NEXTVAL, 3, '0');
+
+    INSERT INTO THIETBI (MATB, TENTB, LOAIMAY, NGAYMUA, VITRI, TINHTRANG)
+    VALUES (v_NewMaTB, p_TenTB, p_LoaiMay, p_NgayMua, p_ViTri, p_TinhTrang);
+
+    COMMIT;
+END;
+/

@@ -1,0 +1,16 @@
+CREATE OR REPLACE PROCEDURE SP_CHECKOUT_HOIVIEN (
+    p_MaCheckIn IN VARCHAR2
+)
+AS
+BEGIN
+    UPDATE CHECKIN
+    SET ThoiGianRa = SYSDATE
+    WHERE MaCheckIn = p_MaCheckIn;
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20017, 'Lỗi cập nhật thời gian ra: ' || SQLERRM);
+END;
+/

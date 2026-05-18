@@ -1,0 +1,15 @@
+CREATE OR REPLACE PROCEDURE SP_CAPNHAT_THIETBI (
+    p_MaTB IN VARCHAR2,
+    p_TenTB IN NVARCHAR2,
+    p_LoaiMay IN NVARCHAR2,
+    p_NgayMua IN DATE,
+    p_ViTri IN NVARCHAR2,
+    p_TinhTrang IN NVARCHAR2
+) AS
+BEGIN
+    UPDATE THIETBI
+    SET TENTB = p_TenTB, LOAIMAY = p_LoaiMay, NGAYMUA = p_NgayMua, VITRI = p_ViTri
+    WHERE MATB = p_MaTB;
+    COMMIT;
+END;
+/

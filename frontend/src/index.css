@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-electric-blue: #007BFF;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #080c14;
+  color: white;
+}

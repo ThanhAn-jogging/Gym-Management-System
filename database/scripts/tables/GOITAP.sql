@@ -1,0 +1,9 @@
+CREATE TABLE GOITAP (
+    MaGoi VARCHAR2(10),
+    TenGoi NVARCHAR2(100) NOT NULL,
+    ThoiGianHieuLuc NUMBER(5),
+    DonGia NUMBER(15, 2),
+    MoTa NVARCHAR2(255),
+    QuyenGoiTap NVARCHAR2(50),
+    CONSTRAINT PK_GOITAP PRIMARY KEY (MaGoi)
+);

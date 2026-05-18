@@ -86,7 +86,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard icon={Users} title="Tổng hội viên" value={data.stats.total || 0} trend={data.stats.growth} color="text-blue-500" />
         <StatCard icon={CalendarCheck} title="Check-in hôm nay" value={data.stats.checkin || 0} trend="Live" color="text-green-500" />
-        <StatCard icon={DollarSign} title="Doanh thu tháng" value={formatMoney(data.stats.rev || 0)} trend="Tháng này" color="text-yellow-500" />
+        <StatCard icon={DollarSign} title="Doanh thu" value={formatMoney(data.stats.rev || 0)} trend="Tháng này" color="text-yellow-500" />
         <StatCard icon={TrendingUp} title="Tăng trưởng" value={data.stats.growth} trend="Tháng này" color="text-purple-500" />
       </div>
 

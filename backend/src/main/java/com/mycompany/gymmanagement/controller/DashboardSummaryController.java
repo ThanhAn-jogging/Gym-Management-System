@@ -20,7 +20,6 @@ public class DashboardSummaryController {
         
         DashboardSummaryDTO summary = new DashboardSummaryDTO();
         
-        // 1. XÂY DỰNG ĐIỀU KIỆN TRUY VẤN ĐỘNG (DYNAMIC QUERY) DỰA VÀO BỘ LỌC
         String condHoaDon = "1=1";
         String condHoiVien = "1=1";
         
@@ -32,21 +31,20 @@ public class DashboardSummaryController {
             condHoiVien = "TO_CHAR(NGAYDANGKY, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')";
         }
 
-        // 2. LẤY THỐNG KÊ TỔNG QUAN (Chạy SQL động thay vì dùng View)
         String sqlStats = "SELECT " +
             "(SELECT COUNT(*) FROM HOIVIEN WHERE " + condHoiVien + ") as TONG_HOI_VIEN, " +
             "(SELECT COUNT(*) FROM CHECKIN WHERE TRUNC(THOIGIANVAO) = TRUNC(SYSDATE)) as CHECKIN_HOM_NAY, " +
-            "(SELECT NVL(SUM(hd.TONGTIEN), 0) FROM HOADON hd WHERE " + condHoaDon + ") as DOANH_THU_THANG " +
+            "(SELECT NVL(SUM(hd.TONGTIEN), 0) FROM HOADON hd WHERE " + condHoaDon + ") as DOANH_THU_THANG, " +
+            "(SELECT TANG_TRUONG FROM VW_DASHBOARD_STATS) as TANG_TRUONG " +
             "FROM DUAL";
             
         jdbcTemplate.query(sqlStats, rs -> {
             summary.setTongHoiVien(rs.getLong("TONG_HOI_VIEN"));
             summary.setCheckInHomNay(rs.getLong("CHECKIN_HOM_NAY"));
             summary.setDoanhThuThang(rs.getDouble("DOANH_THU_THANG"));
-            summary.setTangTruong("Live"); // Giữ hiển thị Live cho nhẹ
+            summary.setTangTruong(rs.getString("TANG_TRUONG")); 
         });
 
-        // 3. LẤY BÁO CÁO GROUPING & TOTALS (Tích hợp điều kiện lọc thời gian)
         String sqlRevenue = "SELECT NVL(gt.TENGOI, 'TỔNG CỘNG (GRAND TOTAL)') AS TEN_GOI, " +
             "COUNT(dk.MADK) AS SO_LUOT_DANG_KY, SUM(hd.TONGTIEN) AS TONG_DOANH_THU " +
             "FROM HOADON hd JOIN DANGKY_GOITAP dk ON hd.MAHD = dk.MAHD " +
@@ -60,7 +58,6 @@ public class DashboardSummaryController {
             )
         ));
 
-        // 4. LẤY CÁC DỮ LIỆU CŨ TỪ VIEW NHƯ BÌNH THƯỜNG
         summary.setActivities(jdbcTemplate.query(
             "SELECT TIEU_DE, MO_TA, TO_CHAR(THOI_GIAN, 'YYYY-MM-DD HH24:MI:SS') as TG, MAU FROM VW_RECENT_ACTIVITIES",
             (rs, i) -> new DashboardSummaryDTO.ActivityDTO(rs.getString("TIEU_DE"), rs.getString("MO_TA"), rs.getString("TG"), rs.getString("MAU"))

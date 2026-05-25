@@ -68,6 +68,19 @@ const HoaDon = () => {
     setIsPrintModalOpen(true);
   };
 
+  const handleStatusChange = async (maHD, newStatus) => {
+    try {
+      await axios.put(`http://localhost:8080/api/hoadon/${maHD}/status`, null, {
+        params: { status: newStatus }
+      });
+      alert('Cập nhật trạng thái thành công!');
+      fetchInvoices(); 
+    } catch (error) {
+      console.error('Lỗi khi cập nhật trạng thái:', error);
+      alert('Cập nhật thất bại, vui lòng thử lại!');
+    }
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500 relative">
       <div className="flex flex-col gap-1">
@@ -183,13 +196,18 @@ const HoaDon = () => {
                       </div>
                     </td>
                     <td className="p-5 text-center">
-                      <span className={`inline-flex items-center justify-center px-3 py-1 text-xs font-bold rounded-full border ${
-                        inv.trangThaiHD === 'Đã thanh toán' 
-                          ? 'bg-blue-500/10 text-[#007BFF] border-blue-500/30' 
-                          : 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30'
-                      }`}>
-                        {inv.trangThaiHD}
-                      </span>
+                      <select
+                        value={inv.trangThaiHD}
+                        onChange={(e) => handleStatusChange(inv.maHD, e.target.value)}
+                        className={`outline-none cursor-pointer px-3 py-1.5 text-xs font-bold rounded-full border text-center text-center-last appearance-none ${
+                          inv.trangThaiHD === 'Đã thanh toán' 
+                            ? 'bg-blue-500/10 text-[#007BFF] border-blue-500/30' 
+                            : 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30'
+                        }`}
+                      >
+                        <option value="Chưa thanh toán" className="bg-[#1e293b] text-yellow-500 font-bold">Chưa thanh toán</option>
+                        <option value="Đã thanh toán" className="bg-[#1e293b] text-[#007BFF] font-bold">Đã thanh toán</option>
+                      </select>
                     </td>
                     <td className="p-5 flex justify-center">
                       <button onClick={() => handlePrintPreview(inv)} className="p-2 bg-gray-800 rounded-lg hover:bg-[#007BFF] hover:text-white transition-colors" title="In hóa đơn">

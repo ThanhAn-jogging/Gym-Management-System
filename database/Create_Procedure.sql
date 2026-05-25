@@ -563,10 +563,12 @@ BEGIN
     v_MaHD := 'HD' || LPAD(SEQ_HOADON.NEXTVAL, 3, '0');
 
     INSERT INTO HOADON (MaHD, MaHV, MaNV, NgayLap, TongTien, MaVoucher, PhuongThucTT, TrangThaiHD, MAGOI)
-    VALUES (v_MaHD, p_MaHV, p_MaNV, p_NgayBatDau, v_TongTien, p_MaVoucher, p_PhuongThucTT, 'Đã thanh toán', p_MaGoi);
+    VALUES (v_MaHD, p_MaHV, p_MaNV, p_NgayBatDau, v_TongTien, p_MaVoucher, p_PhuongThucTT, 'Chưa thanh toán', p_MaGoi);
 
     INSERT INTO DANGKY_GOITAP (MaDK, MaHV, MaGoi, NgayBatDau, NgayKetThuc, MaHD, TrangThai)
-    VALUES (v_MaDK, p_MaHV, p_MaGoi, p_NgayBatDau, v_NgayKetThuc, v_MaHD, 'Đang hoạt động');
+    VALUES (v_MaDK, p_MaHV, p_MaGoi, p_NgayBatDau, v_NgayKetThuc, v_MaHD, 'Chưa kích hoạt');
+
+    COMMIT;
 
     COMMIT;
 END;

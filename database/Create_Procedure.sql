@@ -550,13 +550,18 @@ CREATE OR REPLACE PROCEDURE SP_THEM_DANGKY_GOITAP (
     v_TongTien NUMBER;
     v_NgayKetThuc DATE;
 BEGIN
+    SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
     SELECT DonGia, ThoiGianHieuLuc INTO v_DonGia, v_ThoiGian FROM GOITAP WHERE MaGoi = p_MaGoi;
+
+    DBMS_SESSION.SLEEP(10);
     
     v_NgayKetThuc := p_NgayBatDau + v_ThoiGian;
 
     IF p_MaVoucher IS NOT NULL THEN
         SELECT NVL(PhanTramGiam, 0) INTO v_PhanTramGiam FROM VOUCHER WHERE MaVoucher = p_MaVoucher;
     END IF;
+    
     v_TongTien := v_DonGia * (1 - v_PhanTramGiam / 100);
 
     v_MaDK := 'DK' || LPAD(SEQ_DANGKY_GOITAP.NEXTVAL, 3, '0');
@@ -567,8 +572,6 @@ BEGIN
 
     INSERT INTO DANGKY_GOITAP (MaDK, MaHV, MaGoi, NgayBatDau, NgayKetThuc, MaHD, TrangThai)
     VALUES (v_MaDK, p_MaHV, p_MaGoi, p_NgayBatDau, v_NgayKetThuc, v_MaHD, 'Chưa kích hoạt');
-
-    COMMIT;
 
     COMMIT;
 END;
@@ -627,25 +630,29 @@ CREATE OR REPLACE PROCEDURE SP_DANGKY_LOPHOC (
 ) AS
     v_HienTai NUMBER;
     v_ToiDa NUMBER;
-    v_LoaiLop LOPHOC.LoaiLop%TYPE;
+    v_LoaiLop LOPHOC.LoaiLop%TYPE;  
     v_QuyenHopLe NUMBER;
     v_DaDangKy NUMBER;
 BEGIN
+    SELECT NVL(SoLuongHienTai, 0), NVL(SoLuongToiDa, 0), LoaiLop
+    INTO v_HienTai, v_ToiDa, v_LoaiLop
+    FROM LOPHOC
+    WHERE MaLop = p_MaLop
+    FOR UPDATE;
+
+    DBMS_SESSION.SLEEP(5);
+
     SELECT COUNT(*) INTO v_DaDangKy FROM DANGKY_LOPHOC WHERE MaHV = p_MaHV AND MaLop = p_MaLop;
     IF v_DaDangKy > 0 THEN
         RAISE_APPLICATION_ERROR(-20004, N'Lỗi: Hội viên này đã ghi danh vào lớp này rồi!');
     END IF;
 
-    SELECT NVL(SoLuongHienTai, 0), NVL(SoLuongToiDa, 0), LoaiLop
-    INTO v_HienTai, v_ToiDa, v_LoaiLop
-    FROM LOPHOC
-    WHERE MaLop = p_MaLop;
-
     IF v_HienTai >= v_ToiDa THEN
         RAISE_APPLICATION_ERROR(-20001, N'Lỗi: Lớp học này đã đạt giới hạn tối đa (' || v_ToiDa || N' người).');
     END IF;
 
-    SELECT COUNT(*) INTO v_QuyenHopLe
+    SELECT COUNT(*)
+    INTO v_QuyenHopLe
     FROM DANGKY_GOITAP dk
     JOIN GOITAP gt ON dk.MaGoi = gt.MaGoi
     WHERE dk.MaHV = p_MaHV

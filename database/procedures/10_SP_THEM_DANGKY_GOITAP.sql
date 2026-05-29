@@ -14,13 +14,18 @@ CREATE OR REPLACE PROCEDURE SP_THEM_DANGKY_GOITAP (
     v_TongTien NUMBER;
     v_NgayKetThuc DATE;
 BEGIN
+    SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
     SELECT DonGia, ThoiGianHieuLuc INTO v_DonGia, v_ThoiGian FROM GOITAP WHERE MaGoi = p_MaGoi;
+
+    DBMS_SESSION.SLEEP(10);
     
     v_NgayKetThuc := p_NgayBatDau + v_ThoiGian;
 
     IF p_MaVoucher IS NOT NULL THEN
         SELECT NVL(PhanTramGiam, 0) INTO v_PhanTramGiam FROM VOUCHER WHERE MaVoucher = p_MaVoucher;
     END IF;
+    
     v_TongTien := v_DonGia * (1 - v_PhanTramGiam / 100);
 
     v_MaDK := 'DK' || LPAD(SEQ_DANGKY_GOITAP.NEXTVAL, 3, '0');
@@ -31,8 +36,6 @@ BEGIN
 
     INSERT INTO DANGKY_GOITAP (MaDK, MaHV, MaGoi, NgayBatDau, NgayKetThuc, MaHD, TrangThai)
     VALUES (v_MaDK, p_MaHV, p_MaGoi, p_NgayBatDau, v_NgayKetThuc, v_MaHD, 'Chưa kích hoạt');
-
-    COMMIT;
 
     COMMIT;
 END;
